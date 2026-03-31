@@ -11,34 +11,34 @@
   box-sizing: border-box;
   cursor: pointer;
 }
-/* 全屏动态背景（你要的流体绿/可换色） */
+/* 全屏基础背景 */
 body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   background: #000;
-  /* 流体动画背景 */
-  background: linear-gradient(135deg, #2d5016, #8fbc8f, #548b54);
   position: relative;
 }
-/* 动态流体效果 */
+
+/* 动态流体背景 */
 .liquid-bg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('https://picsum.photos/id/106/1920/1080') center/cover;
-  mix-blend-mode: screen;
-  animation: liquidMove 8s ease-in-out infinite alternate;
-  opacity: 0.8;
+  background: linear-gradient(45deg, #1a3a0f, #4a7a3a, #7aa85a, #b8d8a8);
+  background-size: 400% 400%;
+  animation: liquidFlow 12s ease infinite;
+  opacity: 0.9;
 }
-@keyframes liquidMove {
-  0% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.05) rotate(1deg); }
-  100% { transform: scale(1) rotate(-1deg); }
+@keyframes liquidFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
-/* 中间点击区域（你要的HELLO+头像） */
+
+/* 中间点击区域 */
 .click-area {
   position: absolute;
   top: 50%;
@@ -51,7 +51,8 @@ body {
 .click-area:hover {
   transform: translate(-50%, -50%) scale(1.05);
 }
-/* 头像（可替换成你自己的） */
+
+/* 头像 */
 .avatar {
   width: 80px;
   height: 80px;
@@ -65,6 +66,7 @@ body {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
 }
+
 /* HELLO文字 */
 .hello-text {
   font-size: 32px;
@@ -76,6 +78,7 @@ body {
   border-radius: 8px;
   letter-spacing: 4px;
 }
+
 /* 点击提示 */
 .tip {
   margin-top: 20px;
@@ -89,23 +92,48 @@ body {
   0%, 100% { opacity: 0.8; }
   50% { opacity: 0.3; }
 }
+
+/* 👇 波纹动画关键帧（必须有，否则波纹不显示） */
+@keyframes ripple {
+  from { transform: scale(0); opacity: 1; }
+  to { transform: scale(2); opacity: 0; }
+}
 </style>
 </head>
 <body>
 <!-- 动态流体背景 -->
 <div class="liquid-bg"></div>
 
-<!-- 点击区域 -->
-<div class="click-area" onclick="enterSite()">
+<!-- 点击区域（绑定带事件的点击函数） -->
+<div class="click-area" onclick="enterSite(event)">
   <div class="avatar"></div>
   <div class="hello-text">→HELLO←</div>
   <div class="tip">点击进入我的Y2K主页</div>
 </div>
 
 <script>
-// 点击跳转到你的主页index.html
-function enterSite() {
-  window.location.href = "index.html";
+// 👇 完整带波纹的点击函数（必须用这个，否则波纹不生效）
+function enterSite(e) {
+  // 1. 创建波纹元素
+  const ripple = document.createElement('div');
+  ripple.style.position = 'absolute';
+  ripple.style.width = '200px';
+  ripple.style.height = '200px';
+  ripple.style.borderRadius = '50%';
+  ripple.style.background = 'rgba(255,255,255,0.5)';
+  ripple.style.top = e.clientY - 100 + 'px';
+  ripple.style.left = e.clientX - 100 + 'px';
+  ripple.style.animation = 'ripple 0.6s ease-out';
+  ripple.style.pointerEvents = 'none';
+  document.body.appendChild(ripple);
+  
+  // 2. 动画结束后删除波纹元素
+  setTimeout(() => ripple.remove(), 600);
+  
+  // 3. 0.3秒后跳转到主页，保证波纹完整播放
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 300);
 }
 </script>
 </body>
