@@ -320,7 +320,13 @@ function enterSite() {
     window.location.href = "main.html";
   }, 1500);
 
- // 页面加载完成后自动执行
+  // 视频结束后隐藏
+  crackVideo.onended = () => {
+    crackVideo.style.opacity = 0;
+  };
+}
+
+// 页面加载完成，自动执行，不用手动点！
 window.onload = function() {
   enterSite();
 };
