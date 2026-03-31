@@ -16,46 +16,42 @@ html, body {
   height: 100vh;
   overflow: hidden;
   background: #000;
+  position: relative;
 }
 
-/* 你的背景图 */
-.bg {
+/* 背景图：完全撑满 */
+.liquid-bg {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background: url('bg.jpg') center/cover no-repeat;
-  z-index: 1;
+  background: url('bg.jpg') center center / cover no-repeat;
+  transform: scale(1.1);
 }
 
-/* 碎玻璃图，盖在背景上面 */
-.crack {
+/* 碎玻璃：强制全屏、放大到绝对不漏边 */
+.crack-overlay {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background: url('crack.png') center/cover no-repeat;
+  background: url('crack.png') center center / cover no-repeat;
   opacity: 0;
   pointer-events: none;
-  z-index: 2;
+  z-index: 20;
+  transform: scale(1.2);
 }
 
-/* 一起碎的动画：同时出现、同时停、同时消失 */
-@keyframes screenCrack {
-  0%   { opacity: 0; transform: scale(1.1); }
-  10%  { opacity: 1; transform: scale(1);  }
-  90%  { opacity: 1; transform: scale(1);  }
-  100% { opacity: 0; transform: scale(1);  }
+@keyframes crackAnim {
+  0%   { opacity: 0; transform: scale(1.3); }
+  15%  { opacity: 1; transform: scale(1.2); }
+  85%  { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0; transform: scale(1.2); }
 }
 
-/* 点击后给它加上动画，就一起碎 */
-.crack.show {
-  animation: screenCrack 1.2s forwards;
-}
-
-.center {
+.click-area {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -68,39 +64,47 @@ html, body {
   width: 80px;
   height: 80px;
   background: url('avatar.png') center/contain no-repeat;
-  margin-bottom: 10px;
+  margin: 0 auto 15px;
 }
 
-.text {
+.hello-text {
+  font-size: 32px;
   color: #fff;
   background: rgba(0,0,0,0.6);
   padding: 8px 20px;
   border-radius: 8px;
 }
+
+.tip {
+  margin-top: 20px;
+  color: #fff;
+}
 </style>
 </head>
+<body>
 
-<body onclick="goIndex()">
+<div class="liquid-bg"></div>
+<div class="crack-overlay" id="crackOverlay"></div>
 
-<div class="bg"></div>
-<div class="crack" id="crack"></div>
-
-<div class="center">
+<div class="click-area" onclick="enterSite()">
   <div class="avatar"></div>
-  <div class="text">→ HELLO ←</div>
+  <div class="hello-text">→HELLO←</div>
+  <div class="tip">点击进入我的Y2K主页</div>
 </div>
 
 <script>
-const crack = document.getElementById('crack');
+const crack = document.getElementById('crackOverlay');
 
-function goIndex() {
-  crack.classList.add('show');
+function enterSite() {
+  crack.style.animation = 'none';
+  setTimeout(() => {
+    crack.style.animation = 'crackAnim 1.2s forwards';
+  }, 10);
 
   setTimeout(() => {
-    location.href = 'index.html';
+    location.href = "index.html";
   }, 1200);
 }
 </script>
-
 </body>
 </html>
