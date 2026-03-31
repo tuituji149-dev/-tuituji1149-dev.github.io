@@ -3,192 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NNNulipas's Blog</title>
+    <title>NNulipas's Blog</title>
     <style>
-        /* 全局样式：甜妹风基础 */
+        /* 全局样式 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "微软雅黑", "宋体", sans-serif;
+            font-family: "Microsoft Yahei", sans-serif;
         }
         body {
-            background: #fff5f8; /* 淡粉色背景 */
-            background-image: url("你的格子背景图地址"); /* 替换成你的背景图 */
-            background-size: 200px;
+            background-color: #fff5f8;
+            color: #333;
+            line-height: 1.6;
         }
-        /* 顶部导航栏 */
+        /* 导航栏 */
         .nav {
-            display: flex;
-            background: #ffe6f2;
-            border: 2px solid #ff99cc;
-            border-radius: 8px 8px 0 0;
-            padding: 8px;
-            gap: 16px;
-            margin: 16px auto;
-            max-width: 1200px;
+            background-color: #ff8fab;
+            padding: 15px 0;
+            text-align: center;
         }
         .nav a {
-            padding: 4px 12px;
-            background: #ffcce6;
-            border: 2px solid #ff99cc;
-            border-radius: 6px;
+            color: white;
             text-decoration: none;
-            color: #cc0066;
-            font-weight: bold;
+            padding: 10px 15px;
+            margin: 0 5px;
+            border: 2px solid white;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: inline-block;
         }
-        /* 主体容器：Grid布局 */
+        .nav a:hover {
+            background-color: white;
+            color: #ff8fab;
+        }
+        /* 容器 */
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 20px auto;
+            padding: 0 20px;
             display: grid;
-            grid-template-columns: 240px 1fr 280px;
-            gap: 16px;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 20px;
         }
-        /* 左侧侧边栏 */
-        .sidebar-left {
-            background: #fff;
-            border: 2px solid #ff99cc;
+        /* 侧边栏 */
+        .sidebar {
+            background-color: white;
+            padding: 20px;
             border-radius: 8px;
-            padding: 16px;
+            box-shadow: 0 0 10px rgba(255, 143, 171, 0.2);
         }
-        .avatar {
-            width: 100%;
+        .sidebar h3 {
+            color: #ff8fab;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ff8fab;
+            padding-bottom: 5px;
+        }
+        .social-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background-color: #ff8fab;
+            color: white;
             border-radius: 8px;
-            margin-bottom: 12px;
-        }
-        .social {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 16px;
-        }
-        .social a {
-            display: block;
-            width: 100%;
-            aspect-ratio: 1/1;
-            background: #ffe6f2;
-            border: 2px solid #ff99cc;
-            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
         }
-        /* 中间内容区 */
-        .main {
-            background: #fff;
-            border: 2px solid #ff99cc;
+        .social-links a:hover {
+            background-color: #ff5c8a;
+        }
+        /* 主内容区 */
+        .main-content {
+            background-color: white;
+            padding: 20px;
             border-radius: 8px;
-            padding: 16px;
+            box-shadow: 0 0 10px rgba(255, 143, 171, 0.2);
         }
-        .post-card {
-            border: 2px solid #ffcce6;
+        .main-content h2 {
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ff8fab;
+            padding-bottom: 5px;
+        }
+        .post {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ffe0e9;
+        }
+        .post h3 {
+            color: #ff8fab;
+            margin-bottom: 10px;
+        }
+        .post a {
+            color: #ff8fab;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .post a:hover {
+            text-decoration: underline;
+        }
+        /* 右侧边栏 */
+        .right-sidebar {
+            background-color: white;
+            padding: 20px;
             border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-            display: grid;
-            grid-template-columns: 120px 1fr;
-            gap: 16px;
+            box-shadow: 0 0 10px rgba(255, 143, 171, 0.2);
         }
-        /* 右侧侧边栏 */
-        .sidebar-right {
-            background: #fff;
-            border: 2px solid #ff99cc;
-            border-radius: 8px;
-            padding: 16px;
+        .right-sidebar h3 {
+            color: #ff8fab;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ff8fab;
+            padding-bottom: 5px;
         }
-        .widget {
-            margin-bottom: 16px;
-            border: 2px solid #ff99cc;
-            border-radius: 6px;
-            padding: 8px;
-            background: #ffe6f2;
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
         }
-        .widget h3 {
-            color: #cc0066;
-            margin-bottom: 8px;
+        .tag {
+            background-color: #ffe0e9;
+            color: #ff8fab;
+            padding: 5px 10px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .tag:hover {
+            background-color: #ff8fab;
+            color: white;
+        }
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #ff8fab;
+            color: white;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <!-- 顶部导航 -->
+    <!-- 导航栏 -->
     <div class="nav">
-        <a href="#">导航</a>
-        <a href="#">主页</a>
-        <a href="#">博客</a>
-        <a href="#">动态</a>
-        <a href="#">作品集</a>
-        <a href="#">仓库</a>
-        <a href="#">友链</a>
-        <a href="#">留言</a>
-        <a href="#">关于</a>
+        <a href=" ">主页</a >
+        <a href="blog.html">博客</a >
+        <a href="dynamic.html">动态</a >
+        <a href="works.html">作品集</a >
+        <a href="仓库.html">仓库</a >
+        <a href="friends.html">友链</a >
+        <a href="message.html">留言</a >
+        <a href="about.html">关于</a >
     </div>
 
     <!-- 主体容器 -->
     <div class="container">
-        <!-- 左侧侧边栏 -->
-        <div class="sidebar-left">
-            <img src="你的头像图地址" alt="头像" class="avatar">
-            <div class="intro">
-                <p>这里是南的个人网站，记录日常与创作。喜欢音乐、手工，正在学习数学和编程。感谢你的来访♥</p>
-            </div>
-            <h3>社交</h3>
-            <div class="social">
-                <a href="#"><img src="B站图标地址" alt="B站" width="32"></a>
-                <a href="#"><img src="小红书图标地址" alt="小红书" width="32"></a>
-                <a href="#"><img src="抖音图标地址" alt="抖音" width="32"></a>
-                <!-- 更多社交图标 -->
+        <!-- 左侧边栏 -->
+        <div class="sidebar">
+            <h3>关于我</h3>
+            <p>这里是南的个人网站，记录日常与创作。喜欢音乐、手工，正在学习数学和编程。感谢你的来访❤️</p >
+            <div class="social-links">
+                <a href="#" title="B站">B站</a >
+                <a href="#" title="小红书">小红书</a >
+                <a href="#" title="抖音">抖音</a >
             </div>
         </div>
 
-        <!-- 中间内容区 -->
-        <div class="main">
+        <!-- 主内容区 -->
+        <div class="main-content">
             <h2>Archives</h2>
-            <p>记录开发与日常，一些碎碎念和技术笔记。</p>
-            <hr style="border: 2px solid #ff99cc; margin: 16px 0;">
-            
-            <!-- 文章卡片 -->
-            <div class="post-card">
-                <div>
-                    <img src="文章封面图地址" alt="封面" width="100%" style="border-radius: 4px;">
-                </div>
-                <div>
-                    <span style="background: #ffcce6; padding: 2px 8px; border-radius: 4px; font-size: 12px;">2026-03-26</span>
-                    <span style="background: #ff99cc; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px;">技术</span>
-                    <span style="background: #ff66b2; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px;">CSS</span>
-                    <h3 style="margin: 8px 0;">用 CSS Grid 实现复杂九宫格布局</h3>
-                    <p>Grid的template-areas可以像画地图一样拼版式，这次用它实现了主页的公告+图片+GIF混排布局，附带完整代码解析。</p>
-                    <a href="#" style="color: #cc0066; font-weight: bold;">Read more →</a>
-                </div>
+            <p>记录开发与日常，一些碎碎念和技术笔记。</p >
+            <div class="post">
+                <h3>用 CSS Grid 实现复杂九宫格布局</h3>
+                <p>Grid的template-areas可以像画地图一样拼版式，这次用它实现了主页的公告+图片+GIF混排布局，附带完整代码解析。</p >
+                <a href="#">Read more →</a >
             </div>
-
-            <!-- 分页 -->
-            <div style="text-align: center; margin-top: 16px;">
-                <button>« Prev</button>
+            <div class="pagination">
+                <a href="#">« Prev</a >
                 <span>1 / 1</span>
-                <button>Next »</button>
+                <a href="#">Next »</a >
             </div>
         </div>
 
-        <!-- 右侧侧边栏 -->
-        <div class="sidebar-right">
-            <div class="widget">
-                <h3>SEARCH</h3>
-                <input type="text" placeholder="搜索...">
-                <button>GO</button>
+        <!-- 右侧边栏 -->
+        <div class="right-sidebar">
+            <h3>SEARCH</h3>
+            <input type="text" placeholder="搜索...">
+            <button>GO</button>
+
+            <h3>TAGS</h3>
+            <div class="tags">
+                <a href="#" class="tag">日常 (1)</a >
+                <a href="#" class="tag">公告 (1)</a >
+                <a href="#" class="tag">技术 (2)</a >
+                <a href="#" class="tag">CSS (1)</a >
             </div>
-            <div class="widget">
-                <h3>TAGS</h3>
-                <span style="background: #fff; padding: 4px 8px; border-radius: 12px; margin: 4px; display: inline-block;">日常 (1)</span>
-                <span style="background: #fff; padding: 4px 8px; border-radius: 12px; margin: 4px; display: inline-block;">公告 (1)</span>
-                <span style="background: #fff; padding: 4px 8px; border-radius: 12px; margin: 4px; display: inline-block;">技术 (2)</span>
-                <span style="background: #fff; padding: 4px 8px; border-radius: 12px; margin: 4px; display: inline-block;">CSS (1)</span>
-            </div>
-            <div class="widget">
-                <h3>ARCHIVE</h3>
-                <p>2026-03 (3)</p>
-            </div>
+
+            <h3>ARCHIVE</h3>
+            <a href="#" class="tag">2026-03 (3)</a >
         </div>
     </div>
+
+    <!-- 页脚 -->
+    <footer>
+        <p>© 2026 NNulipas's Blog. All rights reserved.</p >
+    </footer>
+
+    <!-- 简单JS：按钮跳转提示 -->
+    <script>
+        // 给所有导航按钮加点击事件
+        const navLinks = document.querySelectorAll('.nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert(`你点击了【${this.textContent}】按钮！后续可以在这里添加页面跳转逻辑~`);
+            });
+        });
+    </script>
 </body>
 </html>
