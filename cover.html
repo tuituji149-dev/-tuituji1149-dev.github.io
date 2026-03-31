@@ -38,7 +38,7 @@ html, body {
   100% { transform: scale(1.02) rotate(-0.5deg); }
 }
 
-/* 2. 中层：透明碎玻璃PNG（平时隐藏，点击触发，停留1秒） */
+/* 2. 中层：透明碎玻璃PNG（放大1.15倍，彻底占满屏无白边） */
 .crack-overlay {
   position: fixed;
   top: 0;
@@ -49,17 +49,17 @@ html, body {
   opacity: 0;
   pointer-events: none;
   z-index: 15;
-  transform: scale(1.02);
+  transform: scale(1.15); /* 核心修改：放大到1.15倍，完全覆盖屏幕边缘 */
 }
 /* 碎玻璃动画：突然出现+停留1秒+消失 */
 @keyframes crackFade {
-  0% { opacity: 0; transform: scale(1.05); }
-  10% { opacity: 1; transform: scale(1.02); }
-  90% { opacity: 1; transform: scale(1.02); }
-  100% { opacity: 0; transform: scale(1.02); }
+  0% { opacity: 0; transform: scale(1.2); }
+  10% { opacity: 1; transform: scale(1.15); }
+  90% { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 0; transform: scale(1.15); }
 }
 
-/* 3. 顶层：webm破碎视频（平时隐藏，点击同步播放，增强破碎感） */
+/* 3. 顶层：webm破碎视频（同步放大1.15倍，和碎玻璃对齐） */
 #crack-video {
   position: fixed;
   top: 0;
@@ -70,11 +70,11 @@ html, body {
   opacity: 0;
   pointer-events: none;
   z-index: 20;
-  transform: scale(1.02);
-  mix-blend-mode: overlay; /* 叠加模式，让视频和底图/PNG融合更自然，不遮挡底图 */
+  transform: scale(1.15); /* 同步放大，和碎玻璃层完全对齐 */
+  mix-blend-mode: overlay;
 }
 
-/* 中间点击区域（在所有层最上方，保证可点击） */
+/* 中间点击区域（在所有层最上方） */
 .click-area {
   position: absolute;
   top: 50%;
@@ -101,7 +101,7 @@ html, body {
   50% { transform: scale(1.1); }
 }
 
-/* HELLO文字 */
+/* HELLO文字（核心修改：替换成你想要的内容） */
 .hello-text {
   font-size: 32px;
   font-weight: bold;
@@ -113,7 +113,7 @@ html, body {
   letter-spacing: 4px;
 }
 
-/* 点击提示 */
+/* 点击提示文字（核心修改：替换成你想要的内容） */
 .tip {
   margin-top: 20px;
   font-size: 16px;
@@ -140,11 +140,13 @@ html, body {
   <source src="React Bits - Index.webm" type="video/webm">
 </video>
 
-<!-- 中间点击区域 -->
+<!-- 中间点击区域（文字已修改） -->
 <div class="click-area" onclick="enterSite()">
   <div class="avatar"></div>
-  <div class="hello-text">→ HELLO ←</div>
-  <div class="tip">点击进入我的Y2K主页</div>
+  <!-- 👇 这里改主标题，我示例改成「ENTER」，你可以直接改字 -->
+  <div class="hello-text">→ ★ 魔法少女サイト ★←</div>
+  <!-- 👇 这里改提示语，我示例改成「点击开启我的Y2K世界」，你可以直接改字 -->
+  <div class="tip">点击开启</div>
 </div>
 
 <script>
@@ -152,7 +154,7 @@ const crackOverlay = document.getElementById('crackOverlay');
 const crackVideo = document.getElementById('crack-video');
 
 function enterSite() {
-  // 1. 触发透明碎玻璃PNG动画（停留1秒）
+  // 1. 触发透明碎玻璃PNG动画
   crackOverlay.style.animation = 'none';
   setTimeout(() => {
     crackOverlay.style.animation = 'crackFade 1.2s ease-out forwards';
