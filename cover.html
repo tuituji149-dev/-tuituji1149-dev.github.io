@@ -15,47 +15,40 @@ html, body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: transparent;
+  background: #000;
   position: relative;
 }
 
+/* 背景图：完全撑满 */
 .liquid-bg {
-  position: absolute;
-  top: 0;
+  position: fixed;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url('bg.jpg') center/cover no-repeat;
-  opacity: 1;
-  animation: bgFloat 15s ease-in-out infinite alternate;
-  transform: scale(1.02);
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: url('bg.jpg') center center / cover no-repeat;
+  transform: scale(1.1);
 }
 
-@keyframes bgFloat {
-  0% { transform: scale(1.02) rotate(0deg); }
-  50% { transform: scale(1.05) rotate(0.5deg); }
-  100% { transform: scale(1.02) rotate(-0.5deg); }
-}
-
+/* 碎玻璃：强制全屏、放大到绝对不漏边 */
 .crack-overlay {
-  position: absolute;
-  top: 0;
+  position: fixed;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: url('crack.png') center/cover no-repeat;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: url('crack.png') center center / cover no-repeat;
   opacity: 0;
   pointer-events: none;
   z-index: 20;
-  transform: scale(1.02);
+  transform: scale(1.2);
 }
 
-/* 关键：碎出来 → 停1秒 → 再淡掉 */
 @keyframes crackAnim {
-  0%   { opacity: 0; transform: scale(1.05); }
-  10%  { opacity: 1; transform: scale(1.02); }
-  90%  { opacity: 1; transform: scale(1.02); }
-  100% { opacity: 0; transform: scale(1.02); }
+  0%   { opacity: 0; transform: scale(1.3); }
+  15%  { opacity: 1; transform: scale(1.2); }
+  85%  { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0; transform: scale(1.2); }
 }
 
 .click-area {
@@ -65,10 +58,6 @@ html, body {
   transform: translate(-50%, -50%);
   text-align: center;
   z-index: 10;
-  transition: all 0.3s;
-}
-.click-area:hover {
-  transform: translate(-50%, -50%) scale(1.05);
 }
 
 .avatar {
@@ -76,40 +65,19 @@ html, body {
   height: 80px;
   background: url('avatar.png') center/contain no-repeat;
   margin: 0 auto 15px;
-  animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
 }
 
 .hello-text {
   font-size: 32px;
-  font-weight: bold;
   color: #fff;
-  text-shadow: 0 0 10px rgba(0,0,0,0.8);
   background: rgba(0,0,0,0.6);
   padding: 8px 20px;
   border-radius: 8px;
-  letter-spacing: 4px;
 }
 
 .tip {
   margin-top: 20px;
-  font-size: 16px;
   color: #fff;
-  text-shadow: 0 0 5px rgba(0,0,0,0.8);
-  opacity: 0.8;
-  animation: blink 1.5s infinite;
-}
-@keyframes blink {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 0.3; }
-}
-
-@keyframes ripple {
-  from { transform: scale(0); opacity: 1; }
-  to { transform: scale(2); opacity: 0; }
 }
 </style>
 </head>
@@ -118,40 +86,23 @@ html, body {
 <div class="liquid-bg"></div>
 <div class="crack-overlay" id="crackOverlay"></div>
 
-<div class="click-area" onclick="enterSite(event)">
+<div class="click-area" onclick="enterSite()">
   <div class="avatar"></div>
   <div class="hello-text">→HELLO←</div>
   <div class="tip">点击进入我的Y2K主页</div>
 </div>
 
 <script>
-const crackOverlay = document.getElementById('crackOverlay');
+const crack = document.getElementById('crackOverlay');
 
-function enterSite(e) {
-  // 碎玻璃动画总共 1.2秒
-  crackOverlay.style.animation = 'none';
+function enterSite() {
+  crack.style.animation = 'none';
   setTimeout(() => {
-    crackOverlay.style.animation = 'crackAnim 1.2s ease-out forwards';
+    crack.style.animation = 'crackAnim 1.2s forwards';
   }, 10);
 
-  const ripple = document.createElement('div');
-  ripple.style.position = 'absolute';
-  ripple.style.width = '200px';
-  ripple.style.height = '200px';
-  ripple.style.borderRadius = '50%';
-  ripple.style.background = 'rgba(212, 179, 255, 0.6)';
-  ripple.style.top = e.clientY - 100 + 'px';
-  ripple.style.left = e.clientX - 100 + 'px';
-  ripple.style.animation = 'ripple 0.6s ease-out';
-  ripple.style.pointerEvents = 'none';
-  ripple.style.zIndex = '15';
-  document.body.appendChild(ripple);
-  
-  setTimeout(() => ripple.remove(), 600);
-
-  // 停够1秒多再跳转
   setTimeout(() => {
-    window.location.href = "index.html";
+    location.href = "index.html";
   }, 1200);
 }
 </script>
