@@ -217,11 +217,22 @@ html, body {
   75% { transform: scale(1) translate(-1px, -1px); }
   100% { transform: scale(1) translate(0,0); }
 }
+/* 3D上吊绳容器（在底图上方、贴纸下方，不挡任何元素） */
+#lanyard-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 3; /* 层级：底图(1) < 绳子(3) < 贴纸(5) < 文字(30) < 弹窗(9999) */
+  pointer-events: none;
+}
 </style>
 </head>
 <body>
 
 <div class="liquid-bg"></div>
+<div id="lanyard-container"></div>
 
 <!-- ===================== 满屏飘的小贴纸（已改PNG文件名） ===================== -->
 < img class="floating-sticker float-1" src="弹窗1.png">
@@ -325,6 +336,80 @@ function enterSite() {
     crackVideo.style.opacity = 0;
   };
 }
+// ===================== 3D上吊绳效果（直接加在现有JS最后） =====================
+function initHangRope() {
+  // 引入Three.js（CDN加载，不用本地安装）
+  if (window.THREE) return initRope(); // 防止重复加载
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js';
+  script.onload = initRope;
+  document.head.appendChild(script);
+}
+
+function initRope() {
+  const container = document.getElementById('lanyard-container');
+  if (!container) return;
+
+  // 1. 场景、相机、渲染器（透明背景，不挡底图）
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0); // 透明背景
+  container.appendChild(renderer.domElement);
+
+  // 2. 上吊绳3D模型（从屏幕顶部垂下来，真实绳结+绳身）
+  // 绳身曲线：从顶部中间垂下来，带自然晃动弧度
+  const curve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0, 20, 0),    // 顶部起点（屏幕上方）
+    new THREE.Vector3(0, 10, 2),   // 绳结位置
+    new THREE.Vector3(0, 0, 0),    // 绳身中点
+    new THREE.Vector3(0, -10, -1), // 绳身末端
+    new THREE.Vector3(0, -15, 0)   // 绳尾
+  ]);
+  // 绳身几何体（模拟绳子粗细）
+  const ropeGeometry = new THREE.TubeGeometry(curve, 30, 0.3, 8, false);
+  // 绳子材质（深灰+麻绳纹理感，暗黑风格）
+  const ropeMaterial = new THREE.MeshBasicMaterial({ 
+    color: 0x333333,
+    transparent: true,
+    opacity: 0.9
+  });
+  const rope = new THREE.Mesh(ropeGeometry, ropeMaterial);
+  scene.add(rope);
+
+  // 3. 绳结（套索效果，更真实）
+  const knotGeometry = new THREE.TorusGeometry(1, 0.4, 8, 30);
+  const knotMaterial = new THREE.MeshBasicMaterial({ color: 0x222222 });
+  const knot = new THREE.Mesh(knotGeometry, knotMaterial);
+  knot.position.set(0, 10, 2);
+  scene.add(knot);
+
+  // 4. 相机位置（正对绳子，居中显示）
+  camera.position.set(0, 0, 30);
+  camera.lookAt(0, 0, 0);
+
+  // 5. 晃动动画（模拟绳子随风摆动，更真实）
+  function animate() {
+    requestAnimationFrame(animate);
+    // 绳子左右轻微晃动
+    rope.rotation.y = Math.sin(Date.now() * 0.0005) * 0.05;
+    knot.rotation.y = Math.sin(Date.now() * 0.0005) * 0.05;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // 6. 窗口大小自适应
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+}
+
+// 页面加载后自动初始化绳子
+window.addEventListener('load', initHangRope);
+// ==========================================================================
 </script>
 </body>
 </html>
