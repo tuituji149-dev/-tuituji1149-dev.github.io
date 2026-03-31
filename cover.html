@@ -19,7 +19,7 @@ html, body {
   position: relative;
 }
 
-/* 👇 你的原蕾丝底图，100%保留，占满全屏无白边 */
+/* 1. 底层：你的原蕾丝底图（永远显示，占满全屏无白边） */
 .liquid-bg {
   position: fixed;
   top: 0;
@@ -32,14 +32,34 @@ html, body {
   transform: scale(1.02);
   animation: bgFloat 15s ease-in-out infinite alternate;
 }
-
 @keyframes bgFloat {
   0% { transform: scale(1.02) rotate(0deg); }
   50% { transform: scale(1.05) rotate(0.5deg); }
   100% { transform: scale(1.02) rotate(-0.5deg); }
 }
 
-/* 👇 视频破碎特效层：平时隐藏，点击才播放 */
+/* 2. 中层：透明碎玻璃PNG（平时隐藏，点击触发，停留1秒） */
+.crack-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('crack.png') center/cover no-repeat;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 15;
+  transform: scale(1.02);
+}
+/* 碎玻璃动画：突然出现+停留1秒+消失 */
+@keyframes crackFade {
+  0% { opacity: 0; transform: scale(1.05); }
+  10% { opacity: 1; transform: scale(1.02); }
+  90% { opacity: 1; transform: scale(1.02); }
+  100% { opacity: 0; transform: scale(1.02); }
+}
+
+/* 3. 顶层：webm破碎视频（平时隐藏，点击同步播放，增强破碎感） */
 #crack-video {
   position: fixed;
   top: 0;
@@ -51,16 +71,17 @@ html, body {
   pointer-events: none;
   z-index: 20;
   transform: scale(1.02);
+  mix-blend-mode: overlay; /* 叠加模式，让视频和底图/PNG融合更自然，不遮挡底图 */
 }
 
-/* 中间点击区域，在底图上方 */
+/* 中间点击区域（在所有层最上方，保证可点击） */
 .click-area {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  z-index: 10;
+  z-index: 30;
   transition: all 0.3s;
 }
 .click-area:hover {
@@ -108,15 +129,18 @@ html, body {
 </style>
 </head>
 <body>
-<!-- 👇 你的原蕾丝底图，永远显示 -->
+<!-- 底层：蕾丝底图 -->
 <div class="liquid-bg"></div>
 
-<!-- 👇 视频破碎层：平时隐藏，点击播放 -->
+<!-- 中层：透明碎玻璃PNG -->
+<div class="crack-overlay" id="crackOverlay"></div>
+
+<!-- 顶层：webm破碎视频 -->
 <video id="crack-video" muted playsinline>
   <source src="React Bits - Index.webm" type="video/webm">
 </video>
 
-<!-- 点击区域 -->
+<!-- 中间点击区域 -->
 <div class="click-area" onclick="enterSite()">
   <div class="avatar"></div>
   <div class="hello-text">→ HELLO ←</div>
@@ -124,15 +148,22 @@ html, body {
 </div>
 
 <script>
+const crackOverlay = document.getElementById('crackOverlay');
 const crackVideo = document.getElementById('crack-video');
 
 function enterSite() {
-  // 1. 显示视频层，从头播放破碎动画
+  // 1. 触发透明碎玻璃PNG动画（停留1秒）
+  crackOverlay.style.animation = 'none';
+  setTimeout(() => {
+    crackOverlay.style.animation = 'crackFade 1.2s ease-out forwards';
+  }, 10);
+
+  // 2. 同步播放webm破碎视频
   crackVideo.style.opacity = 0.8;
   crackVideo.currentTime = 0;
   crackVideo.play();
 
-  // 2. 视频播放完后隐藏，跳转主页
+  // 3. 视频播放完后隐藏，跳转主页
   crackVideo.onended = () => {
     crackVideo.style.opacity = 0;
     window.location.href = "index.html";
