@@ -370,11 +370,15 @@ function initRope() {
   // 绳身几何体（模拟绳子粗细）
   const ropeGeometry = new THREE.TubeGeometry(curve, 30, 0.3, 8, false);
   // 绳子材质（深灰+麻绳纹理感，暗黑风格）
-  const ropeMaterial = new THREE.MeshBasicMaterial({ 
-    color: 0x333333,
-    transparent: true,
-    opacity: 0.9
-  });
+ // 加载你的GIF绳子贴图
+const ropeTexture = new THREE.TextureLoader().load('93f8d7c38a79b12bdef22c2f64bb6e8f.gif');
+// 让GIF动起来（关键！）
+ropeTexture.animation = { duration: Infinity };
+const ropeMaterial = new THREE.MeshBasicMaterial({ 
+  map: ropeTexture,
+  transparent: true,
+  opacity: 0.9
+});
   const rope = new THREE.Mesh(ropeGeometry, ropeMaterial);
   scene.add(rope);
 
