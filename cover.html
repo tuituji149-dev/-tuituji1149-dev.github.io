@@ -20,36 +20,25 @@ body {
   position: relative;
 }
 
-/* 👇 粉紫色高级波浪流体背景（带大理石纹理质感） */
+/* 👇 背景替换为你的蕾丝魔法棒图 */
 .liquid-bg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  /* 多层粉紫渐变叠加，打造高级层次感 */
-  background: 
-    linear-gradient(45deg, #E2D4FF 0%, #F8D4E8 25%, #D4B3FF 50%, #F0C8FF 75%, #E2D4FF 100%),
-    linear-gradient(135deg, #F8D4E8 0%, #D4B3FF 50%, #F0C8FF 100%);
-  background-blend-mode: overlay;
-  background-size: 400% 400%, 200% 200%;
-  /* 双重流动动画，打造自然波浪感 */
-  animation: liquidFlow 18s ease infinite alternate, liquidShift 12s ease-in-out infinite;
+  /* 替换为你的背景图，cover铺满全屏 */
+  background: url('你的第一张图的在线地址/本地路径') center/cover no-repeat;
   opacity: 0.95;
-  /* 应用SVG扭曲滤镜，生成大理石花纹质感 */
-  filter: url(#liquidDistort);
+  /* 轻微流动动画，让背景更有高级感 */
+  animation: bgFloat 15s ease-in-out infinite alternate;
 }
 
-/* 双层流动动画，让波浪更自然高级 */
-@keyframes liquidFlow {
-  0% { background-position: 0% 50%, 0% 50%; transform: scale(1) rotate(0deg); }
-  50% { background-position: 100% 50%, 100% 50%; transform: scale(1.04) rotate(0.8deg); }
-  100% { background-position: 0% 50%, 0% 50%; transform: scale(1) rotate(-0.8deg); }
-}
-@keyframes liquidShift {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(-2%, 1%); }
-  100% { transform: translate(0, 0); }
+/* 背景轻微浮动动画，增强质感 */
+@keyframes bgFloat {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.03) rotate(0.5deg); }
+  100% { transform: scale(1) rotate(-0.5deg); }
 }
 
 /* 中间点击区域 */
@@ -66,14 +55,12 @@ body {
   transform: translate(-50%, -50%) scale(1.05);
 }
 
-/* 头像 */
+/* 👇 头像替换为你的像素鼠标图，去掉圆角适配像素风格 */
 .avatar {
   width: 80px;
   height: 80px;
-  background: url('https://picsum.photos/id/64/80/80') center/cover no-repeat;
-  border-radius: 50%;
+  background: url('你的第二张图的在线地址/本地路径') center/contain no-repeat;
   margin: 0 auto 15px;
-  border: 3px solid #fff;
   animation: pulse 2s ease-in-out infinite;
 }
 @keyframes pulse {
@@ -115,17 +102,7 @@ body {
 </style>
 </head>
 <body>
-<!-- 👇 SVG流体扭曲滤镜（生成大理石花纹的核心，必须保留） -->
-<svg width="0" height="0" style="position:absolute;">
-  <filter id="liquidDistort">
-    <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" seed="5" result="noise"/>
-    <feDisplacementMap in="SourceGraphic" in2="noise" scale="40" xChannelSelector="R" yChannelSelector="G"/>
-    <feGaussianBlur stdDeviation="2"/>
-    <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.9 0"/>
-  </filter>
-</svg>
-
-<!-- 动态流体背景 -->
+<!-- 背景 -->
 <div class="liquid-bg"></div>
 
 <!-- 点击区域 -->
