@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>点击进入我的Y2K主页</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+/* 全屏动态背景（你要的流体绿/可换色） */
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #000;
+  /* 流体动画背景 */
+  background: linear-gradient(135deg, #2d5016, #8fbc8f, #548b54);
+  position: relative;
+}
+/* 动态流体效果 */
+.liquid-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://picsum.photos/id/106/1920/1080') center/cover;
+  mix-blend-mode: screen;
+  animation: liquidMove 8s ease-in-out infinite alternate;
+  opacity: 0.8;
+}
+@keyframes liquidMove {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.05) rotate(1deg); }
+  100% { transform: scale(1) rotate(-1deg); }
+}
+/* 中间点击区域（你要的HELLO+头像） */
+.click-area {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+  transition: all 0.3s;
+}
+.click-area:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+/* 头像（可替换成你自己的） */
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: url('https://picsum.photos/id/64/80/80') center/cover no-repeat;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  border: 3px solid #fff;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+/* HELLO文字 */
+.hello-text {
+  font-size: 32px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.6);
+  padding: 8px 20px;
+  border-radius: 8px;
+  letter-spacing: 4px;
+}
+/* 点击提示 */
+.tip {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #fff;
+  text-shadow: 0 0 5px rgba(0,0,0,0.8);
+  opacity: 0.8;
+  animation: blink 1.5s infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.3; }
+}
+</style>
+</head>
+<body>
+<!-- 动态流体背景 -->
+<div class="liquid-bg"></div>
+
+<!-- 点击区域 -->
+<div class="click-area" onclick="enterSite()">
+  <div class="avatar"></div>
+  <div class="hello-text">→HELLO←</div>
+  <div class="tip">点击进入我的Y2K主页</div>
+</div>
+
+<script>
+// 点击跳转到你的主页index.html
+function enterSite() {
+  window.location.href = "index.html";
+}
+</script>
+</body>
+</html>
