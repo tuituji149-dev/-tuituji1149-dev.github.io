@@ -2,87 +2,173 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>Y2K主页</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>点击进入我的Y2K主页</title>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    cursor: pointer;
-  }
-  body {
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-  }
-  /* 你的背景图 */
-  .bg {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: url("bg.jpg") center/cover no-repeat;
-  }
-  /* 碎玻璃图（平时隐藏） */
-  .crack {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: url("crack.png") center/cover no-repeat;
-    opacity: 0;
-    pointer-events: none;
-  }
-  /* 点一下就显示 */
-  .crack.show {
-    opacity: 1;
-  }
-  .center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 10;
-  }
-  .avatar {
-    width: 80px;
-    height: 80px;
-    background: url("avatar.png") center/contain no-repeat;
-    margin-bottom: 10px;
-  }
-  .text {
-    color: white;
-    background: rgba(0,0,0,0.6);
-    padding: 6px 16px;
-    border-radius: 6px;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+/* 全屏基础，彻底消除白边 */
+html, body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent;
+  position: relative;
+}
+
+/* 你的蕾丝背景图，占满全屏无白边 */
+.liquid-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('bg.jpg') center/cover no-repeat;
+  opacity: 1;
+  animation: bgFloat 15s ease-in-out infinite alternate;
+  transform: scale(1.02); /* 轻微放大，彻底消除边缘白边 */
+}
+
+/* 背景轻微浮动动画 */
+@keyframes bgFloat {
+  0% { transform: scale(1.02) rotate(0deg); }
+  50% { transform: scale(1.05) rotate(0.5deg); }
+  100% { transform: scale(1.02) rotate(-0.5deg); }
+}
+
+/* 👇 玻璃破碎特效层，100%占满全屏无白边 */
+.crack-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('crack.png') center/cover no-repeat; /* 你的透明底碎玻璃图 */
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+  transform: scale(1.02); /* 同步放大，彻底消除边缘白边 */
+  animation: crackAnim 0.8s ease-out forwards;
+}
+
+/* 玻璃破碎动画关键帧 */
+@keyframes crackAnim {
+  0% { opacity: 0; transform: scale(1.05); }
+  50% { opacity: 1; transform: scale(1.02); }
+  100% { opacity: 0; transform: scale(1.02); }
+}
+
+/* 中间点击区域 */
+.click-area {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10;
+  transition: all 0.3s;
+}
+.click-area:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+/* 你的像素鼠标头像 */
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: url('avatar.png') center/contain no-repeat;
+  margin: 0 auto 15px;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* HELLO文字 */
+.hello-text {
+  font-size: 32px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.6);
+  padding: 8px 20px;
+  border-radius: 8px;
+  letter-spacing: 4px;
+}
+
+/* 点击提示 */
+.tip {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #fff;
+  text-shadow: 0 0 5px rgba(0,0,0,0.8);
+  opacity: 0.8;
+  animation: blink 1.5s infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.3; }
+}
+
+/* 波纹动画关键帧 */
+@keyframes ripple {
+  from { transform: scale(0); opacity: 1; }
+  to { transform: scale(2); opacity: 0; }
+}
 </style>
 </head>
+<body>
+<!-- 背景层 -->
+<div class="liquid-bg"></div>
 
-<body onclick="goIndex()">
+<!-- 👇 玻璃破碎特效层（JS控制点击触发） -->
+<div class="crack-overlay" id="crackOverlay"></div>
 
-  <!-- 你的背景图 -->
-  <div class="bg"></div>
-
-  <!-- 碎玻璃图 叠在上面 -->
-  <div class="crack" id="crack"></div>
-
-  <!-- 中间头像和文字 -->
-  <div class="center">
-    <div class="avatar"></div>
-    <div class="text">点我进入</div>
-  </div>
+<!-- 点击区域 -->
+<div class="click-area" onclick="enterSite(event)">
+  <div class="avatar"></div>
+  <div class="hello-text">→HELLO←</div>
+  <div class="tip">点击进入我的Y2K主页</div>
+</div>
 
 <script>
-  const crack = document.getElementById("crack");
-  function goIndex() {
-    // 点一下 → 碎玻璃闪一下
-    crack.classList.add("show");
-    // 闪完跳转
-    setTimeout(() => {
-      location.href = "index.html";
-    }, 200);
-  }
-</script>
+// 获取破碎特效层
+const crackOverlay = document.getElementById('crackOverlay');
 
+// 点击函数：同时触发波纹+玻璃破碎+跳转
+function enterSite(e) {
+  // 1. 重置并触发玻璃破碎动画
+  crackOverlay.style.animation = 'none';
+  setTimeout(() => {
+    crackOverlay.style.animation = 'crackAnim 0.8s ease-out forwards';
+  }, 10);
+
+  // 2. 触发粉紫色波纹
+  const ripple = document.createElement('div');
+  ripple.style.position = 'absolute';
+  ripple.style.width = '200px';
+  ripple.style.height = '200px';
+  ripple.style.borderRadius = '50%';
+  ripple.style.background = 'rgba(212, 179, 255, 0.6)';
+  ripple.style.top = e.clientY - 100 + 'px';
+  ripple.style.left = e.clientX - 100 + 'px';
+  ripple.style.animation = 'ripple 0.6s ease-out';
+  ripple.style.pointerEvents = 'none';
+  ripple.style.zIndex = '15';
+  document.body.appendChild(ripple);
+  
+  setTimeout(() => ripple.remove(), 600);
+  
+  // 3. 1秒后跳转到主页（等破碎动画完整播放）
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 800);
+}
+</script>
 </body>
 </html>
