@@ -20,21 +20,18 @@ body {
   position: relative;
 }
 
-/* 👇 背景替换为你的蕾丝魔法棒图 */
+/* 背景：用你放进文件夹的bg.jpg */
 .liquid-bg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  /* 替换为你的背景图，cover铺满全屏 */
-  background: url('你的第一张图的在线地址/本地路径') center/cover no-repeat;
+  background: url('bg.jpg') center/cover no-repeat;
   opacity: 0.95;
-  /* 轻微流动动画，让背景更有高级感 */
   animation: bgFloat 15s ease-in-out infinite alternate;
 }
 
-/* 背景轻微浮动动画，增强质感 */
 @keyframes bgFloat {
   0% { transform: scale(1) rotate(0deg); }
   50% { transform: scale(1.03) rotate(0.5deg); }
@@ -55,11 +52,11 @@ body {
   transform: translate(-50%, -50%) scale(1.05);
 }
 
-/* 👇 头像替换为你的像素鼠标图，去掉圆角适配像素风格 */
+/* 头像：用你放进文件夹的avatar.png */
 .avatar {
   width: 80px;
   height: 80px;
-  background: url('你的第二张图的在线地址/本地路径') center/contain no-repeat;
+  background: url('avatar.png') center/contain no-repeat;
   margin: 0 auto 15px;
   animation: pulse 2s ease-in-out infinite;
 }
@@ -102,10 +99,8 @@ body {
 </style>
 </head>
 <body>
-<!-- 背景 -->
 <div class="liquid-bg"></div>
 
-<!-- 点击区域 -->
 <div class="click-area" onclick="enterSite(event)">
   <div class="avatar"></div>
   <div class="hello-text">→HELLO←</div>
@@ -113,7 +108,6 @@ body {
 </div>
 
 <script>
-// 粉紫色波纹点击函数
 function enterSite(e) {
   const ripple = document.createElement('div');
   ripple.style.position = 'absolute';
