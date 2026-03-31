@@ -20,22 +20,36 @@ body {
   position: relative;
 }
 
-/* 👇 粉紫色动态流体背景（适配你的Y2K主页） */
+/* 👇 粉紫色高级波浪流体背景（带大理石纹理质感） */
 .liquid-bg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, #E2D4FF, #F8D4E8, #D4B3FF, #F0C8FF);
-  background-size: 400% 400%;
-  animation: liquidFlow 12s ease infinite;
-  opacity: 0.9;
+  /* 多层粉紫渐变叠加，打造高级层次感 */
+  background: 
+    linear-gradient(45deg, #E2D4FF 0%, #F8D4E8 25%, #D4B3FF 50%, #F0C8FF 75%, #E2D4FF 100%),
+    linear-gradient(135deg, #F8D4E8 0%, #D4B3FF 50%, #F0C8FF 100%);
+  background-blend-mode: overlay;
+  background-size: 400% 400%, 200% 200%;
+  /* 双重流动动画，打造自然波浪感 */
+  animation: liquidFlow 18s ease infinite alternate, liquidShift 12s ease-in-out infinite;
+  opacity: 0.95;
+  /* 应用SVG扭曲滤镜，生成大理石花纹质感 */
+  filter: url(#liquidDistort);
 }
+
+/* 双层流动动画，让波浪更自然高级 */
 @keyframes liquidFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% { background-position: 0% 50%, 0% 50%; transform: scale(1) rotate(0deg); }
+  50% { background-position: 100% 50%, 100% 50%; transform: scale(1.04) rotate(0.8deg); }
+  100% { background-position: 0% 50%, 0% 50%; transform: scale(1) rotate(-0.8deg); }
+}
+@keyframes liquidShift {
+  0% { transform: translate(0, 0); }
+  50% { transform: translate(-2%, 1%); }
+  100% { transform: translate(0, 0); }
 }
 
 /* 中间点击区域 */
@@ -101,6 +115,16 @@ body {
 </style>
 </head>
 <body>
+<!-- 👇 SVG流体扭曲滤镜（生成大理石花纹的核心，必须保留） -->
+<svg width="0" height="0" style="position:absolute;">
+  <filter id="liquidDistort">
+    <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" seed="5" result="noise"/>
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="40" xChannelSelector="R" yChannelSelector="G"/>
+    <feGaussianBlur stdDeviation="2"/>
+    <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.9 0"/>
+  </filter>
+</svg>
+
 <!-- 动态流体背景 -->
 <div class="liquid-bg"></div>
 
@@ -112,15 +136,13 @@ body {
 </div>
 
 <script>
-// 👇 粉紫色波纹点击函数（适配你的主页风格）
+// 粉紫色波纹点击函数
 function enterSite(e) {
-  // 1. 创建粉紫色波纹元素
   const ripple = document.createElement('div');
   ripple.style.position = 'absolute';
   ripple.style.width = '200px';
   ripple.style.height = '200px';
   ripple.style.borderRadius = '50%';
-  // 粉紫色半透明，和你的主页完美适配
   ripple.style.background = 'rgba(212, 179, 255, 0.6)';
   ripple.style.top = e.clientY - 100 + 'px';
   ripple.style.left = e.clientX - 100 + 'px';
@@ -128,10 +150,7 @@ function enterSite(e) {
   ripple.style.pointerEvents = 'none';
   document.body.appendChild(ripple);
   
-  // 2. 动画结束后删除波纹
   setTimeout(() => ripple.remove(), 600);
-  
-  // 3. 0.3秒后跳转到主页
   setTimeout(() => {
     window.location.href = "index.html";
   }, 300);
