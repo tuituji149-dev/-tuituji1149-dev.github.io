@@ -1,194 +1,288 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NNNulipas's Blog</title>
-    <style>
-        /* 全局样式：甜妹风基础 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "微软雅黑", "宋体", sans-serif;
-        }
-        body {
-            background: #fff5f8; /* 淡粉色背景 */
-            background-image: url("你的格子背景图地址"); /* 替换成你的背景图 */
-            background-size: 200px;
-        }
-        /* 顶部导航栏 */
-        .nav {
-            display: flex;
-            background: #ffe6f2;
-            border: 2px solid #ff99cc;
-            border-radius: 8px 8px 0 0;
-            padding: 8px;
-            gap: 16px;
-            margin: 16px auto;
-            max-width: 1200px;
-        }
-        .nav a {
-            padding: 4px 12px;
-            background: #ffcce6;
-            border: 2px solid #ff99cc;
-            border-radius: 6px;
-            text-decoration: none;
-            color: #cc0066;
-            font-weight: bold;
-        }
-        /* 主体容器：Grid布局 */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 240px 1fr 280px;
-            gap: 16px;
-        }
-        /* 左侧侧边栏 */
-        .sidebar-left {
-            background: #fff;
-            border: 2px solid #ff99cc;
-            border-radius: 8px;
-            padding: 16px;
-        }
-        .avatar {
-            width: 100%;
-            border-radius: 8px;
-            margin-bottom: 12px;
-        }
-        .social {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-top: 16px;
-        }
-        .social a {
-            display: block;
-            width: 100%;
-            aspect-ratio: 1/1;
-            background: #ffe6f2;
-            border: 2px solid #ff99cc;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        /* 中间内容区 */
-        .main {
-            background: #fff;
-            border: 2px solid #ff99cc;
-            border-radius: 8px;
-            padding: 16px;
-        }
-        .post-card {
-            border: 2px solid #ffcce6;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 16px;
-            display: grid;
-            grid-template-columns: 120px 1fr;
-            gap: 16px;
-        }
-        /* 右侧侧边栏 */
-        .sidebar-right {
-            background: #fff;
-            border: 2px solid #ff99cc;
-            border-radius: 8px;
-            padding: 16px;
-        }
-        .widget {
-            margin-bottom: 16px;
-            border: 2px solid #ff99cc;
-            border-radius: 6px;
-            padding: 8px;
-            background: #ffe6f2;
-        }
-        .widget h3 {
-            color: #cc0066;
-            margin-bottom: 8px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Untitled | Y2K Sweet</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+body {
+  background: linear-gradient(135deg, #E2D4FF 0%, #F8D4E8 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.main-box {
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 16 / 9;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  border: 3px solid #D4B3FF;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(212, 179, 255, 0.25);
+}
+.top-bar {
+  background: linear-gradient(90deg, #F4D8FF 0%, #E4C2FF 100%);
+  padding: 12px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #C8A2FF;
+}
+.top-title {
+  background: linear-gradient(90deg, #F8D4E8 0%, #F4D8FF 100%);
+  border: 3px solid #C8A2FF;
+  border-radius: 25px;
+  padding: 5px 30px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #8A62C2;
+  letter-spacing: 1px;
+}
+.top-controls {
+  display: flex;
+  gap: 12px;
+}
+.control-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid #C8A2FF;
+  background: linear-gradient(135deg, #F4D8FF 0%, #F8D4E8 100%);
+}
+.nav-bar {
+  background: linear-gradient(90deg, #DBC2FF 0%, #E8D1FF 100%);
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 3px solid #B996FF;
+}
+.nav-left {
+  display: flex;
+  gap: 15px;
+}
+.nav-btn {
+  background: linear-gradient(135deg, #F4D8FF 0%, #F8D4E8 100%);
+  border: 3px solid #C8A2FF;
+  border-radius: 20px;
+  padding: 6px 22px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #8A62C2;
+  cursor: pointer;
+  border: none;
+}
+.nav-right {
+  display: flex;
+  gap: 10px;
+}
+.social-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 3px solid #C8A2FF;
+  background: #C8A2FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 18px;
+}
+.view-tip {
+  background: #fff;
+  padding: 9px 25px;
+  border-bottom: 2px solid #E4D1FF;
+}
+.view-text {
+  display: inline-block;
+  background: linear-gradient(90deg, #F4D8FF 0%, #F8D4E8 100%);
+  border: 2px solid #D4B3FF;
+  border-radius: 15px;
+  padding: 4px 18px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #8A62C2;
+}
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  padding: 25px;
+  height: calc(100% - 210px);
+}
+.left-card {
+  background: #fff;
+  border: 3px solid #E4D1FF;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.card-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #8A62C2;
+  padding-bottom: 6px;
+  border-bottom: 2px solid #E4D1FF;
+}
+.card-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #8A62C2;
+}
+.img-box {
+  width: 100%;
+  height: 110px;
+  background: #F4E8FF;
+  border: 2px solid #E4D1FF;
+  border-radius: 12px;
+}
+.right-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.grid-img {
+  background: #F4E8FF;
+  border: 2px solid #E4D1FF;
+  border-radius: 12px;
+  aspect-ratio: 1 / 1;
+}
+.before-box {
+  grid-column: 1 / 3;
+  background: #fff;
+  border: 3px solid #E4D1FF;
+  border-radius: 14px;
+  padding: 16px;
+}
+.before-title {
+  font-size: 17px;
+  font-weight: bold;
+  color: #8A62C2;
+  margin-bottom: 8px;
+}
+.before-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #8A62C2;
+}
+.bottom-bar {
+  background: linear-gradient(90deg, #DBC2FF 0%, #E8D1FF 100%);
+  padding: 10px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 3px solid #B996FF;
+}
+.bottom-left {
+  display: flex;
+  gap: 10px;
+}
+.bottom-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid #C8A2FF;
+  background: linear-gradient(135deg, #F4D8FF 0%, #F8D4E8 100%);
+}
+.bottom-center {
+  font-size: 18px;
+  font-weight: bold;
+  color: #8A62C2;
+  background: linear-gradient(90deg, #F8D4E8 0%, #F4D8FF 100%);
+  border: 2px solid #C8A2FF;
+  border-radius: 20px;
+  padding: 4px 22px;
+}
+.bottom-right {
+  font-size: 13px;
+  font-weight: bold;
+  color: #8A62C2;
+  background: #F4E8FF;
+  border: 2px solid #D4B3FF;
+  border-radius: 8px;
+  padding: 3px 10px;
+}
+</style>
 </head>
 <body>
-    <!-- 顶部导航 -->
-    <div class="nav">
-        <a href="#">导航</a>
-        <a href="#">主页</a>
-        <a href="#">博客</a>
-        <a href="#">动态</a>
-        <a href="#">作品集</a>
-        <a href="#">仓库</a>
-        <a href="#">友链</a>
-        <a href="#">留言</a>
-        <a href="#">关于</a>
+
+<div class="main-box">
+  <div class="top-bar">
+    <div class="top-controls">
+      <div class="control-btn"></div>
+      <div class="control-btn"></div>
+      <div class="control-btn"></div>
+    </div>
+    <div class="top-title">Untitled</div>
+    <div></div>
+  </div>
+
+  <div class="nav-bar">
+    <div class="nav-left">
+      <button class="nav-btn">home</button>
+      <button class="nav-btn">platforms</button>
+      <button class="nav-btn">metrics</button>
+    </div>
+    <div class="nav-right">
+      <div class="social-icon">💬</div>
+      <div class="social-icon">🎵</div>
+      <div class="social-icon">📷</div>
+    </div>
+  </div>
+
+  <div class="view-tip">
+    <div class="view-text">CURRENTLY VIEWING: ABOUT ME</div>
+  </div>
+
+  <div class="content">
+    <div class="left-card">
+      <div class="card-title">About Me</div>
+      <div class="card-text">
+        Welcome to my cute Y2K website~<br>
+        I love pink & purple retro internet style.
+      </div>
+      <div class="img-box"></div>
+      <div class="img-box"></div>
     </div>
 
-    <!-- 主体容器 -->
-    <div class="container">
-        <!-- 左侧侧边栏 -->
-        <div class="sidebar-left">
-            <img src="你的头像图地址" alt="头像" class="avatar">
-            <div class="intro">
-                <p>这里是南的个人网站，记录日常与创作。喜欢音乐、手工，正在学习数学和编程。感谢你的来访♥</p>
-            </div>
-            <h3>社交</h3>
-            <div class="social">
-                <a href="#"><img src="B站图标地址" alt="B站" width="32"></a>
-                <a href="#"><img src="小红书图标地址" alt="小红书" width="32"></a>
-                <a href="#"><img src="抖音图标地址" alt="抖音" width="32"></a>
-                <!-- 更多社交图标 -->
-            </div>
-        </div>
+    <div class="right-grid">
+      <div class="grid-img"></div>
+      <div class="grid-img"></div>
+      <div class="grid-img"></div>
+      <div class="grid-img"></div>
 
-        <!-- 中间内容区 -->
-        <div class="main">
-            <h2>Archives</h2>
-            <p>记录开发与日常，一些碎碎念和技术笔记。</p>
-            <hr style="border: 2px solid #ff99cc; margin: 16px 0;">
-            
-            <!-- 文章卡片 -->
-            <div class="post-card">
-                <div>
-                    <img src="文章封面图地址" alt="封面" width="100%" style="border-radius: 4px;">
-                </div>
-                <div>
-                    <span style="background: #ffcce6; padding: 2px 8px; border-radius: 4px; font-size: 12px;">2026-03-26</span>
-                    <span style="background: #ff99cc; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px;">技术</span>
-                    <span style="background: #ff66b2; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px;">CSS</span>
-                    <h3 style="margin: 8px 0;">用 CSS Grid 实现复杂九宫格布局</h3>
-                    <p>Grid的template-areas可以像画地图一样拼版式，这次用它实现了主页的公告+图片+GIF混排布局，附带完整代码解析。</p>
-                    <a href="#" style="color: #cc0066; font-weight: bold;">Read more →</a>
-                </div>
-            </div>
-
-            <!-- 分页 -->
-            <div style="text-align: center; margin-top: 16px;">
-                <button>« Prev</button>
-                <span>1 / 1</span>
-                <button>Next »</button>
-            </div>
+      <div class="before-box">
+        <div class="before-title">Before Following</div>
+        <div class="before-text">
+          Please read carefully before following.<br>
+          This is my personal cute y2k website page.
         </div>
-
-        <!-- 右侧侧边栏 -->
-        <div class="sidebar-right">
-            <div class="widget">
-                <h3>SEARCH</h3>
-                <input type="text" placeholder="搜索...">
-                <button>GO</button>
-            </div>
-            <div class="widget">
-                <h3>TAGS</h3>
-                <span style="background: #fff; padding: 4px 8px; border-radius: 12px; margin: 4px; display: inline-block;">日常 (1)</span>
-                <span style="background: #fff; padding: 4px 8px; border-radius: 12px; margin: 4px; display: inline-block;">公告 (1)</span>
-                <span style="background: #fff; padding: 4px 8px; border-radius: 12px; margin: 4px; display: inline-block;">技术 (2)</span>
-                <span style="background: #fff; padding: 4px 8px; border-radius: 12px; margin: 4px; display: inline-block;">CSS (1)</span>
-            </div>
-            <div class="widget">
-                <h3>ARCHIVE</h3>
-                <p>2026-03 (3)</p>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="bottom-left">
+      <div class="bottom-btn"></div>
+      <div class="bottom-btn"></div>
+      <div class="bottom-btn"></div>
+    </div>
+    <div class="bottom-center">Untitled</div>
+    <div class="bottom-right">by xiu.carrd.co</div>
+  </div>
+</div>
+
 </body>
 </html>
