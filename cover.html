@@ -384,7 +384,9 @@ const ropeMaterial = new THREE.MeshBasicMaterial({
 
   // 3. 绳结（套索效果，更真实）
   const knotGeometry = new THREE.TorusGeometry(1, 0.4, 8, 30);
-  const knotMaterial = new THREE.MeshBasicMaterial({ color: 0x222222 });
+  const knotTexture = new THREE.TextureLoader().load('93f8d7c38a79b12bdef22c2f64bb6e8f.gif');
+knotTexture.animation = { duration: Infinity };
+const knotMaterial = new THREE.MeshBasicMaterial({ map: knotTexture });
   const knot = new THREE.Mesh(knotGeometry, knotMaterial);
   knot.position.set(0, 10, 2);
   scene.add(knot);
