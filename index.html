@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NNulipas's Blog</title>
+    <title>NNulipas's Blog | Y2K甜妹风</title>
     <style>
-        /* 全局样式 */
         * {
             margin: 0;
             padding: 0;
@@ -13,217 +12,373 @@
             font-family: "Microsoft Yahei", sans-serif;
         }
         body {
-            background-color: #fff5f8;
-            color: #333;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #ffd6e8 0%, #d6e8ff 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            user-select: none;
         }
-        /* 导航栏 */
-        .nav {
-            background-color: #ff8fab;
-            padding: 15px 0;
-            text-align: center;
-        }
-        .nav a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            margin: 0 5px;
-            border: 2px solid white;
-            border-radius: 8px;
-            transition: all 0.3s;
-            display: inline-block;
-        }
-        .nav a:hover {
-            background-color: white;
-            color: #ff8fab;
-        }
-        /* 容器 */
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 1fr 2fr 1fr;
-            gap: 20px;
-        }
-        /* 侧边栏 */
-        .sidebar {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(255, 143, 171, 0.2);
-        }
-        .sidebar h3 {
-            color: #ff8fab;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #ff8fab;
-            padding-bottom: 5px;
-        }
-        .social-links {
-            margin-top: 20px;
+        /* 顶部任务栏 */
+        .taskbar-top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: #ffb6c1;
+            border-bottom: 2px solid #ff69b4;
             display: flex;
+            align-items: center;
+            padding: 0 10px;
             gap: 10px;
+            z-index: 999;
         }
-        .social-links a {
+        .taskbar-top .nav-btn {
+            background: #fff0f5;
+            border: 2px solid #ff69b4;
+            border-radius: 8px;
+            padding: 5px 12px;
+            color: #ff1493;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .taskbar-top .nav-btn:hover {
+            background: #ff69b4;
+            color: white;
+        }
+        /* 桌面图标区 */
+        .desktop-icons {
+            position: fixed;
+            top: 50px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 10;
+        }
+        .icon {
+            width: 60px;
+            height: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .icon:hover {
+            transform: scale(1.05);
+        }
+        .icon-img {
             width: 50px;
             height: 50px;
-            background-color: #ff8fab;
-            color: white;
+            background: #fff;
             border-radius: 8px;
+            border: 2px solid #ff69b4;
             display: flex;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
-            transition: all 0.3s;
+            font-size: 24px;
         }
-        .social-links a:hover {
-            background-color: #ff5c8a;
+        .icon-text {
+            font-size: 12px;
+            color: #ff1493;
+            background: rgba(255,255,255,0.8);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-top: 4px;
         }
-        /* 主内容区 */
-        .main-content {
-            background-color: white;
-            padding: 20px;
+        /* 可拖拽窗口 */
+        .window {
+            position: absolute;
+            background: #fff0f5;
+            border: 3px solid #ff69b4;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(255, 143, 171, 0.2);
+            box-shadow: 0 8px 20px rgba(255,105,180,0.3);
+            min-width: 300px;
+            min-height: 200px;
+            z-index: 100;
+            resize: both;
+            overflow: auto;
         }
-        .main-content h2 {
-            color: #333;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #ff8fab;
-            padding-bottom: 5px;
+        .window-header {
+            background: #ffb6c1;
+            padding: 6px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            border-bottom: 2px solid #ff69b4;
         }
-        .post {
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #ffe0e9;
+        .window-title {
+            font-weight: bold;
+            color: #fff;
+            font-size: 14px;
         }
-        .post h3 {
-            color: #ff8fab;
-            margin-bottom: 10px;
+        .window-close {
+            width: 16px;
+            height: 16px;
+            background: #ff69b4;
+            border-radius: 50%;
+            cursor: pointer;
         }
-        .post a {
-            color: #ff8fab;
-            text-decoration: none;
+        .window-content {
+            padding: 15px;
+            color: #ff1493;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        /* 音乐播放器窗口 */
+        .player {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 280px;
+            height: 120px;
+            background: #fff0f5;
+            border: 3px solid #ff69b4;
+            border-radius: 12px;
+            padding: 10px;
+            z-index: 200;
+        }
+        .player-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .player-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #ffb6c1;
+        }
+        .player-info {
+            flex: 1;
+        }
+        .player-title {
+            font-size: 13px;
+            color: #ff1493;
             font-weight: bold;
         }
-        .post a:hover {
-            text-decoration: underline;
+        .player-artist {
+            font-size: 11px;
+            color: #ff69b4;
         }
-        /* 右侧边栏 */
-        .right-sidebar {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(255, 143, 171, 0.2);
+        .player-progress {
+            width: 100%;
+            height: 6px;
+            background: #ffe0e9;
+            border-radius: 3px;
+            margin: 8px 0;
+            overflow: hidden;
         }
-        .right-sidebar h3 {
-            color: #ff8fab;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #ff8fab;
-            padding-bottom: 5px;
+        .player-progress-bar {
+            width: 40%;
+            height: 100%;
+            background: #ff69b4;
         }
-        .tags {
+        /* 底部任务栏 */
+        .taskbar-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: #ffb6c1;
+            border-top: 2px solid #ff69b4;
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 999;
         }
-        .tag {
-            background-color: #ffe0e9;
-            color: #ff8fab;
-            padding: 5px 10px;
-            border-radius: 20px;
-            text-decoration: none;
-            transition: all 0.3s;
+        .time {
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
         }
-        .tag:hover {
-            background-color: #ff8fab;
-            color: white;
-        }
-        /* 页脚 */
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #ff8fab;
-            color: white;
-            margin-top: 20px;
+        /* 装饰元素 */
+        .decoration {
+            position: fixed;
+            bottom: 40px;
+            right: 20px;
+            width: 150px;
+            height: 150px;
+            background: url('https://picsum.photos/id/237/150/150') center/cover;
+            border-radius: 12px;
+            border: 3px solid #ff69b4;
+            z-index: 5;
         }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <div class="nav">
-        <a href=" ">主页</a >
-        <a href="blog.html">博客</a >
-        <a href="dynamic.html">动态</a >
-        <a href="works.html">作品集</a >
-        <a href="仓库.html">仓库</a >
-        <a href="friends.html">友链</a >
-        <a href="message.html">留言</a >
-        <a href="about.html">关于</a >
+    <!-- 顶部任务栏（原导航栏） -->
+    <div class="taskbar-top">
+        <a href=" " class="nav-btn">主页</a >
+        <a href="blog.html" class="nav-btn">博客</a >
+        <a href="dynamic.html" class="nav-btn">动态</a >
+        <a href="works.html" class="nav-btn">作品集</a >
+        <a href="#" class="nav-btn">仓库</a >
+        <a href="#" class="nav-btn">友链</a >
+        <a href="#" class="nav-btn">留言</a >
+        <a href="#" class="nav-btn">关于</a >
     </div>
 
-    <!-- 主体容器 -->
-    <div class="container">
-        <!-- 左侧边栏 -->
-        <div class="sidebar">
-            <h3>关于我</h3>
-            <p>这里是tuituji的个人网站，感谢你的来访❤️</p >
-            <div class="social-links">
-                <a href="#" title="B站">B站</a >
-                <a href="#" title="小红书">小红书</a >
-                <a href="#" title="抖音">抖音</a >
-            </div>
+    <!-- 桌面图标 -->
+    <div class="desktop-icons">
+        <div class="icon" onclick="openWindow('about')">
+            <div class="icon-img">💖</div>
+            <div class="icon-text">关于我</div>
         </div>
-
-        <!-- 主内容区 -->
-        <div class="main-content">
-            <h2>Archives</h2>
-            <p>记录日常，一些碎碎念。</p >
-            <div class="post">
-                <h3>用 CSS Grid 实现复杂九宫格布局</h3>
-                <p>Grid的template-areas可以像画地图一样拼版式，这次用它实现了主页的公告+图片+GIF混排布局，附带完整代码解析。</p >
-                <a href="#">Read more →</a >
-            </div>
-            <div class="pagination">
-                <a href="#">« Prev</a >
-                <span>1 / 1</span>
-                <a href="#">Next »</a >
-            </div>
+        <div class="icon" onclick="openWindow('blog')">
+            <div class="icon-img">📝</div>
+            <div class="icon-text">博客</div>
         </div>
-
-        <!-- 右侧边栏 -->
-        <div class="right-sidebar">
-            <h3>SEARCH</h3>
-            <input type="text" placeholder="搜索...">
-            <button>GO</button>
-
-            <h3>TAGS</h3>
-            <div class="tags">
-                <a href="#" class="tag">日常 (1)</a >
-                <a href="#" class="tag">公告 (1)</a >
-                <a href="#" class="tag">技术 (2)</a >
-                <a href="#" class="tag">CSS (1)</a >
-            </div>
-
-            <h3>ARCHIVE</h3>
-            <a href="#" class="tag">2026-03 (3)</a >
+        <div class="icon" onclick="openWindow('tags')">
+            <div class="icon-img">🏷️</div>
+            <div class="icon-text">标签</div>
         </div>
     </div>
 
-    <!-- 页脚 -->
-    <footer>
-        <p>© 2026 NNulipas's Blog. All rights reserved.</p >
-    </footer>
+    <!-- 可拖拽窗口：关于我 -->
+    <div class="window" id="window-about" style="top: 80px; left: 100px;">
+        <div class="window-header" onmousedown="dragWindow('window-about', event)">
+            <div class="window-title">关于我</div>
+            <div class="window-close" onclick="closeWindow('window-about')"></div>
+        </div>
+        <div class="window-content">
+            <p>这里是tuituji的个人网站，记录日常与创作。感谢你的来访❤️</p >
+            <div style="margin-top: 10px; display: flex; gap: 8px;">
+                <a href="#" style="background: #ff69b4; color: white; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 12px;">B站</a >
+                <a href="#" style="background: #ff69b4; color: white; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 12px;">小红书</a >
+                <a href="#" style="background: #ff69b4; color: white; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 12px;">抖音</a >
+            </div>
+        </div>
+    </div>
 
-    <!-- 简单JS：按钮跳转提示 -->
+    <!-- 可拖拽窗口：博客 -->
+    <div class="window" id="window-blog" style="top: 80px; left: 450px;">
+        <div class="window-header" onmousedown="dragWindow('window-blog', event)">
+            <div class="window-title">Archives</div>
+            <div class="window-close" onclick="closeWindow('window-blog')"></div>
+        </div>
+        <div class="window-content">
+            <p>记录开发与日常，一些碎碎念和技术笔记。</p >
+            <div style="margin-top: 10px; border-top: 1px solid #ffb6c1; padding-top: 10px;">
+                <h4 style="color: #ff1493;">用 CSS Grid 实现复杂九宫格布局</h4>
+                <p style="font-size: 12px; margin-top: 4px;">Grid的template-areas可以像画地图一样拼版式，这次用它实现了主页的公告+图片+GIF混排布局，附带完整代码解析。</p >
+                <a href="#" style="color: #ff69b4; font-size: 12px; font-weight: bold;">Read more →</a >
+            </div>
+            <div style="margin-top: 10px; text-align: center;">
+                <a href="#" style="color: #ff69b4; font-size: 12px;">« Prev</a >
+                <span style="margin: 0 8px; font-size: 12px;">1 / 1</span>
+                <a href="#" style="color: #ff69b4; font-size: 12px;">Next »</a >
+            </div>
+        </div>
+    </div>
+
+    <!-- 可拖拽窗口：标签 -->
+    <div class="window" id="window-tags" style="top: 80px; left: 800px;">
+        <div class="window-header" onmousedown="dragWindow('window-tags', event)">
+            <div class="window-title">SEARCH & TAGS</div>
+            <div class="window-close" onclick="closeWindow('window-tags')"></div>
+        </div>
+        <div class="window-content">
+            <div style="margin-bottom: 10px;">
+                <input type="text" placeholder="搜索..." style="width: 70%; padding: 4px; border: 2px solid #ff69b4; border-radius: 4px;">
+                <button style="background: #ff69b4; color: white; border: none; padding: 4px 8px; border-radius: 4px; margin-left: 4px;">GO</button>
+            </div>
+            <div style="margin-top: 10px;">
+                <h4 style="color: #ff1493; margin-bottom: 8px;">TAGS</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    <a href="#" style="background: #ffe0e9; color: #ff69b4; padding: 3px 6px; border-radius: 10px; text-decoration: none; font-size: 12px;">日常 (1)</a >
+                    <a href="#" style="background: #ffe0e9; color: #ff69b4; padding: 3px 6px; border-radius: 10px; text-decoration: none; font-size: 12px;">公告 (1)</a >
+                    <a href="#" style="background: #ffe0e9; color: #ff69b4; padding: 3px 6px; border-radius: 10px; text-decoration: none; font-size: 12px;">技术 (2)</a >
+                    <a href="#" style="background: #ffe0e9; color: #ff69b4; padding: 3px 6px; border-radius: 10px; text-decoration: none; font-size: 12px;">CSS (1)</a >
+                </div>
+            </div>
+            <div style="margin-top: 10px;">
+                <h4 style="color: #ff1493; margin-bottom: 8px;">ARCHIVE</h4>
+                <a href="#" style="background: #ffe0e9; color: #ff69b4; padding: 3px 6px; border-radius: 10px; text-decoration: none; font-size: 12px;">2026-03 (3)</a >
+            </div>
+        </div>
+    </div>
+
+    <!-- 音乐播放器 -->
+    <div class="player">
+        <div class="player-header">
+            <div class="player-avatar"></div>
+            <div class="player-info">
+                <div class="player-title">びばびば</div>
+                <div class="player-artist">Serani Poji / 一室生存</div>
+            </div>
+        </div>
+        <div class="player-progress">
+            <div class="player-progress-bar"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color: #ff69b4;">
+            <span>4:25</span>
+            <span>0:00</span>
+        </div>
+    </div>
+
+    <!-- 底部任务栏 -->
+    <div class="taskbar-bottom">
+        <div></div>
+        <div class="time" id="time"></div>
+    </div>
+
+    <!-- 装饰元素 -->
+    <div class="decoration"></div>
+
     <script>
-        // 给所有导航按钮加点击事件
-        const navLinks = document.querySelectorAll('.nav a');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                alert(`你点击了【${this.textContent}】按钮！后续可以在这里添加页面跳转逻辑~`);
+        // 窗口拖拽功能
+        function dragWindow(windowId, event) {
+            const windowEl = document.getElementById(windowId);
+            const startX = event.clientX - windowEl.offsetLeft;
+            const startY = event.clientY - windowEl.offsetTop;
+
+            function moveHandler(e) {
+                windowEl.style.left = (e.clientX - startX) + 'px';
+                windowEl.style.top = (e.clientY - startY) + 'px';
+            }
+            function upHandler() {
+                document.removeEventListener('mousemove', moveHandler);
+                document.removeEventListener('mouseup', upHandler);
+            }
+
+            document.addEventListener('mousemove', moveHandler);
+            document.addEventListener('mouseup', upHandler);
+        }
+
+        // 关闭窗口
+        function closeWindow(windowId) {
+            document.getElementById(windowId).style.display = 'none';
+        }
+
+        // 打开窗口
+        function openWindow(windowId) {
+            const win = document.getElementById('window-' + windowId);
+            win.style.display = 'block';
+            win.style.zIndex = ++maxZIndex;
+        }
+
+        // 时间显示
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString();
+            document.getElementById('time').textContent = timeStr;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // 窗口层级管理
+        let maxZIndex = 100;
+        const windows = document.querySelectorAll('.window');
+        windows.forEach(win => {
+            win.addEventListener('mousedown', () => {
+                win.style.zIndex = ++maxZIndex;
             });
         });
     </script>
