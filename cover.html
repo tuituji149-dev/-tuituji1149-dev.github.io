@@ -11,67 +11,68 @@
   box-sizing: border-box;
   cursor: pointer;
 }
-
 html, body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   background: #000;
+  position: relative;
 }
 
-/* 视频背景：适配webm格式，全屏无白边 */
-#video-bg {
+/* 👇 你的原蕾丝底图，100%保留，占满全屏无白边 */
+.liquid-bg {
   position: fixed;
-  left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('bg.jpg') center/cover no-repeat;
+  opacity: 1;
   z-index: 1;
-  transform: scale(1.05); /* 轻微放大彻底消除边缘白边 */
+  transform: scale(1.02);
+  animation: bgFloat 15s ease-in-out infinite alternate;
 }
 
-/* 碎玻璃覆盖层：100%占满屏 */
-#crack {
+@keyframes bgFloat {
+  0% { transform: scale(1.02) rotate(0deg); }
+  50% { transform: scale(1.05) rotate(0.5deg); }
+  100% { transform: scale(1.02) rotate(-0.5deg); }
+}
+
+/* 👇 视频破碎特效层：平时隐藏，点击才播放 */
+#crack-video {
   position: fixed;
-  left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
-  background: url('crack.png') center/cover no-repeat;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
   opacity: 0;
   pointer-events: none;
-  z-index: 2;
-  transform: scale(1.05);
+  z-index: 20;
+  transform: scale(1.02);
 }
 
-/* 点击后碎玻璃动画：突然出现+停留1秒+消失 */
-@keyframes crackAnim {
-  0%  { opacity: 0; transform: scale(1.1); }
-  15% { opacity: 1; transform: scale(1.05); }
-  85% { opacity: 1; transform: scale(1.05); }
-  100%{ opacity: 0; transform: scale(1.05); }
-}
-
-#crack.show {
-  animation: crackAnim 1.2s forwards;
-}
-
-/* 中间头像+文字 */
-.center {
+/* 中间点击区域，在底图上方 */
+.click-area {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
   z-index: 10;
+  transition: all 0.3s;
+}
+.click-area:hover {
+  transform: translate(-50%, -50%) scale(1.05);
 }
 
+/* 你的原头像 */
 .avatar {
   width: 80px;
   height: 80px;
   background: url('avatar.jpg') center/contain no-repeat;
-  margin-bottom: 15px;
+  margin: 0 auto 15px;
   animation: pulse 2s ease-in-out infinite;
 }
 @keyframes pulse {
@@ -79,15 +80,19 @@ html, body {
   50% { transform: scale(1.1); }
 }
 
+/* HELLO文字 */
 .hello-text {
   font-size: 32px;
+  font-weight: bold;
   color: #fff;
-  background: rgba(0,0,0,0.7);
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.6);
   padding: 8px 20px;
   border-radius: 8px;
   letter-spacing: 4px;
 }
 
+/* 点击提示 */
 .tip {
   margin-top: 20px;
   font-size: 16px;
@@ -102,42 +107,37 @@ html, body {
 }
 </style>
 </head>
+<body>
+<!-- 👇 你的原蕾丝底图，永远显示 -->
+<div class="liquid-bg"></div>
 
-<body onclick="enterSite()">
-
-<!-- 直接用你的webm视频，注意文件名要完全一致 -->
-<video id="video-bg" muted loop autoplay playsinline>
+<!-- 👇 视频破碎层：平时隐藏，点击播放 -->
+<video id="crack-video" muted playsinline>
   <source src="React Bits - Index.webm" type="video/webm">
 </video>
 
-<div id="crack"></div>
-
-<div class="center">
+<!-- 点击区域 -->
+<div class="click-area" onclick="enterSite()">
   <div class="avatar"></div>
   <div class="hello-text">→ HELLO ←</div>
   <div class="tip">点击进入我的Y2K主页</div>
 </div>
 
 <script>
-const crack = document.getElementById('crack');
-const videoBg = document.getElementById('video-bg');
+const crackVideo = document.getElementById('crack-video');
 
 function enterSite() {
-  // 1. 触发碎玻璃动画
-  crack.classList.add('show');
-  
-  // 2. 视频同步强化破碎感（可选，让背景跟着震一下）
-  videoBg.style.transform = 'scale(1.05)';
-  setTimeout(() => {
-    videoBg.style.transform = 'scale(1.05)';
-  }, 1200);
+  // 1. 显示视频层，从头播放破碎动画
+  crackVideo.style.opacity = 0.8;
+  crackVideo.currentTime = 0;
+  crackVideo.play();
 
-  // 3. 1.2秒后跳转主页
-  setTimeout(() => {
+  // 2. 视频播放完后隐藏，跳转主页
+  crackVideo.onended = () => {
+    crackVideo.style.opacity = 0;
     window.location.href = "index.html";
-  }, 1200);
+  };
 }
 </script>
-
 </body>
 </html>
