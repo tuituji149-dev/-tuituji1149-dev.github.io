@@ -2,106 +2,87 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>点击进入我的Y2K主页</title>
+<title>Y2K主页</title>
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  cursor: pointer;
-}
-body {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background: #000;
-  position: relative;
-}
-
-/* 你的背景，完全不动 */
-.liquid-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('bg.jpg') center/cover no-repeat;
-  opacity: 0.95;
-}
-
-/* 跟图一模一样的玻璃碎纹 */
-.crack {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path d="M0,0L1000,1000M1000,0L0,1000M300,0L700,1000M700,0L300,1000M500,0L500,1000M0,300L1000,700M0,700L1000,300" stroke="rgba(220,200,255,0.8)" stroke-width="2.5" fill="none"/></svg>');
-  background-size: 100% 100%;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 20;
-}
-
-/* 点击时闪一下 */
-.crack.show {
-  opacity: 1;
-}
-
-.click-area {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  z-index: 10;
-}
-
-.avatar {
-  width: 80px;
-  height: 80px;
-  background: url('avatar.png') center/contain no-repeat;
-  margin: 0 auto 15px;
-}
-
-.hello-text {
-  font-size: 32px;
-  color: #fff;
-  background: rgba(0,0,0,0.6);
-  padding: 8px 20px;
-  border-radius: 8px;
-}
-
-.tip {
-  margin-top: 20px;
-  color: #fff;
-}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  body {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+  }
+  /* 你的背景图 */
+  .bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url("bg.jpg") center/cover no-repeat;
+  }
+  /* 碎玻璃图（平时隐藏） */
+  .crack {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url("crack.png") center/cover no-repeat;
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* 点一下就显示 */
+  .crack.show {
+    opacity: 1;
+  }
+  .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+  }
+  .avatar {
+    width: 80px;
+    height: 80px;
+    background: url("avatar.png") center/contain no-repeat;
+    margin-bottom: 10px;
+  }
+  .text {
+    color: white;
+    background: rgba(0,0,0,0.6);
+    padding: 6px 16px;
+    border-radius: 6px;
+  }
 </style>
 </head>
-<body>
 
-<div class="liquid-bg"></div>
-<div class="crack" id="crack"></div>
+<body onclick="goIndex()">
 
-<div class="click-area" onclick="enterSite()">
-  <div class="avatar"></div>
-  <div class="hello-text">→HELLO←</div>
-  <div class="tip">点击进入主页</div>
-</div>
+  <!-- 你的背景图 -->
+  <div class="bg"></div>
+
+  <!-- 碎玻璃图 叠在上面 -->
+  <div class="crack" id="crack"></div>
+
+  <!-- 中间头像和文字 -->
+  <div class="center">
+    <div class="avatar"></div>
+    <div class="text">点我进入</div>
+  </div>
 
 <script>
-const crack = document.getElementById('crack');
-
-function enterSite() {
-  // 点击 → 碎玻璃立刻出现
-  crack.classList.add('show');
-
-  // 200毫秒后跳转，刚好闪一下
-  setTimeout(() => {
-    window.location.href = "index.html";
-  }, 200);
-}
+  const crack = document.getElementById("crack");
+  function goIndex() {
+    // 点一下 → 碎玻璃闪一下
+    crack.classList.add("show");
+    // 闪完跳转
+    setTimeout(() => {
+      location.href = "index.html";
+    }, 200);
+  }
 </script>
+
 </body>
 </html>
