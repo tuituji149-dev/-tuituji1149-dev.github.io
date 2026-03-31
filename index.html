@@ -1,242 +1,155 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>マジンガレ ボエムドール</title>
+<title>魔法少女サイト</title>
 <style>
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "MS PGothic", "メイリオ", sans-serif;
+  cursor: pointer;
 }
-body {
-  background: #fff5fb;
-  background-image: url('bg.jpg'); /* 用你现有的bg.jpg当背景 */
-  background-size: cover;
-  background-attachment: fixed;
-  padding: 20px;
-  min-height: 100vh;
-}
-/* 全局容器 */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 220px 1fr 280px;
-  gap: 15px;
-}
-/* 顶部Banner */
-.banner {
-  grid-column: 1 / -1;
-  height: 180px;
-  background: linear-gradient(135deg, #ffe6f2 0%, #f8e8ff 100%);
-  border: 3px solid #f2b3d9;
-  border-radius: 12px 12px 0 0;
+html, body {
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
+  background: #000;
   position: relative;
-  margin-bottom: 10px;
 }
-.banner-img {
-  width: 100%;
-  height: 100%;
-  background: url('banner.png'); /* 初音banner图，和cover同文件夹 */
-  background-size: cover;
-  background-position: center;
+
+/* 底图 */
+.liquid-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('bg.jpg') center/cover no-repeat;
+  opacity: 1;
+  z-index: 1;
+  transform: scale(1.02);
+  animation: bgFloat 15s ease-in-out infinite alternate;
 }
-.banner-title {
+@keyframes bgFloat {
+  0% { transform: scale(1.02) rotate(0deg); }
+  50% { transform: scale(1.05) rotate(0.5deg); }
+  100% { transform: scale(1.02) rotate(-0.5deg); }
+}
+
+/* 碎玻璃 */
+.crack-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('crack.png') center/cover no-repeat;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 15;
+  transform: scale(1.15);
+}
+@keyframes crackFade {
+  0% { opacity: 0; transform: scale(1.2); }
+  10% { opacity: 1; transform: scale(1.15); }
+  90% { opacity: 1; transform: scale(1.15); }
+  100% { opacity: 0; transform: scale(1.15); }
+}
+
+/* 破碎视频 */
+#crack-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 20;
+  transform: scale(1.15);
+  mix-blend-mode: overlay;
+}
+
+/* -------------------- 满屏飘小贴纸样式 -------------------- */
+.floating-sticker {
+  position: fixed;
+  width: 50px;
+  z-index: 5;
+  pointer-events: none;
+  animation: floatAround 20s infinite linear;
+}
+
+/* 飘移动画（满屏乱飘、转圈、丝滑） */
+@keyframes floatAround {
+  0%   { transform: translate(0,0) rotate(0deg); }
+  25%  { transform: translate(50px, 30px) rotate(90deg); }
+  50%  { transform: translate(-30px, 60px) rotate(180deg); }
+  75%  { transform: translate(40px, -20px) rotate(270deg); }
+  100% { transform: translate(0,0) rotate(360deg); }
+}
+
+/* 每个贴纸速度、方向差异化 */
+.float-1 { animation-duration: 18s; animation-delay: 0s; }
+.float-2 { animation-duration: 22s; animation-delay: 1s; }
+.float-3 { animation-duration: 20s; animation-delay: 2s; }
+.float-4 { animation-duration: 24s; animation-delay: 0.5s; }
+.float-5 { animation-duration: 19s; animation-delay: 1.5s; }
+/* -------------------------------------------------------------------- */
+
+/* 中间文字区域 */
+.click-area {
   position: absolute;
-  right: 30px;
-  top: 30px;
-  background: rgba(255,255,255,0.8);
-  border: 3px solid #f2b3d9;
-  border-radius: 20px;
-  padding: 8px 25px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 30;
+  transition: all 0.3s;
+}
+.click-area:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: url('avatar.jpg') center/contain no-repeat;
+  margin: 0 auto 15px;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.hello-text {
   font-size: 32px;
   font-weight: bold;
-  color: #d988b9;
-  text-shadow: 2px 2px 0 #fff;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+  background: rgba(0,0,0,0.6);
+  padding: 8px 20px;
+  border-radius: 8px;
+  letter-spacing: 4px;
 }
-/* 左侧导航栏 */
-.left-nav {
-  background: rgba(255,255,255,0.9);
-  border: 3px solid #f2b3d9;
-  border-radius: 12px;
-  padding: 15px;
-  position: sticky;
-  top: 20px;
-  height: fit-content;
-}
-.nav-box {
-  background: #fff0f8;
-  border: 2px dashed #f2b3d9;
-  border-radius: 10px;
-  padding: 12px;
-  margin-bottom: 15px;
-}
-.nav-title {
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  color: #d988b9;
-  margin-bottom: 10px;
-  padding-bottom: 5px;
-  border-bottom: 2px solid #f2b3d9;
-}
-.nav-btn {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin: 8px 0;
-  background: linear-gradient(135deg, #ffe6f2 0%, #f8e8ff 100%);
-  border: 2px solid #f2b3d9;
-  border-radius: 15px;
+
+.tip {
+  margin-top: 20px;
   font-size: 16px;
-  font-weight: bold;
-  color: #d988b9;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  color: #fff;
+  text-shadow: 0 0 5px rgba(0,0,0,0.8);
+  opacity: 0.8;
+  animation: blink 1.5s infinite;
 }
-.nav-btn:hover {
-  transform: scale(1.05);
-  background: linear-gradient(135deg, #ffd9ec 0%, #f2d9ff 100%);
-  box-shadow: 0 3px 10px rgba(242,179,217,0.3);
+@keyframes blink {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.3; }
 }
-/* 中间主内容区 */
-.main-content {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.about-card {
-  background: rgba(255,255,255,0.9);
-  border: 3px solid #f2b3d9;
-  border-radius: 12px;
-  padding: 20px;
-}
-.card-header {
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
-  color: #d988b9;
-  margin-bottom: 15px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #f2b3d9;
-}
-.about-text {
-  font-size: 15px;
-  line-height: 1.6;
-  color: #8a62c2;
-  margin-bottom: 15px;
-}
-.avatar-box {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 15px;
-}
-.avatar-img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 3px solid #f2b3d9;
-  background: #ffe6f2;
-}
-.favorites-card {
-  background: rgba(255,255,255,0.9);
-  border: 3px solid #f2b3d9;
-  border-radius: 12px;
-  padding: 20px;
-}
-.fav-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 10px;
-}
-.fav-item {
-  background: #fff0f8;
-  border: 2px solid #f2b3d9;
-  border-radius: 8px;
-  padding: 8px;
-  font-size: 14px;
-  color: #8a62c2;
-  transition: all 0.2s ease;
-}
-.fav-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 3px 8px rgba(242,179,217,0.2);
-}
-/* 右侧侧边栏 */
-.right-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  position: sticky;
-  top: 20px;
-  height: fit-content;
-}
-.sidebar-card {
-  background: rgba(255,255,255,0.9);
-  border: 3px solid #f2b3d9;
-  border-radius: 12px;
-  padding: 15px;
-}
-.sidebar-title {
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  color: #d988b9;
-  margin-bottom: 10px;
-  padding-bottom: 5px;
-  border-bottom: 2px solid #f2b3d9;
-}
-.popup-sticker {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin: 8px 0;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-.popup-sticker:hover {
-  transform: scale(1.05);
-}
-.gallery-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-top: 10px;
-}
-.gallery-img {
-  width: 100%;
-  aspect-ratio: 1/1;
-  border-radius: 8px;
-  border: 2px solid #f2b3d9;
-  background: #ffe6f2;
-  transition: all 0.2s ease;
-  cursor: pointer;
-}
-.gallery-img:hover {
-  transform: scale(1.05);
-}
-/* 底部栏 */
-.footer {
-  grid-column: 1 / -1;
-  background: rgba(255,255,255,0.9);
-  border: 3px solid #f2b3d9;
-  border-radius: 0 0 12px 12px;
-  padding: 15px;
-  text-align: center;
-  margin-top: 10px;
-}
-.footer-text {
-  font-size: 14px;
-  color: #d988b9;
-  font-weight: bold;
-}
-/* 弹窗互动样式（用你之前的弹窗GIF） */
+
+/* -------------------- 弹窗崩坏效果（置顶） -------------------- */
 .error-popup {
   position: fixed;
   width: 320px;
@@ -250,159 +163,168 @@ body {
   font-family: "MS Sans Serif", sans-serif;
   font-size: 12px;
 }
-.popup-show {
-  opacity: 1;
-  transform: scale(1);
-  animation: shake 0.3s;
+.popup-header {
+  background: linear-gradient(90deg, #003cbc, #1084f0);
+  padding: 3px 5px;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-@keyframes shake {
-  0%{transform:scale(1) translate(0,0);}25%{transform:scale(1) translate(-2px,2px);}50%{transform:scale(1) translate(2px,-2px);}100%{transform:scale(1) translate(0,0);}
+.popup-close {
+  width: 14px;
+  height: 14px;
+  background: #c0c0c0;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  cursor: default;
+}
+.popup-content {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.popup-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+.popup-text {
+  line-height: 1.4;
 }
 .popup-btn {
-  margin: 0 auto 15px;
   display: block;
+  margin: 10px auto 15px;
   padding: 4px 20px;
   background: #c0c0c0;
   border: 2px solid #fff;
-  cursor: pointer;
+  box-shadow: inset 1px 1px 0 #fff, 1px 1px 0 #000;
+  cursor: default;
+}
+.popup-show {
+  opacity: 1;
+  transform: scale(1);
+  animation: popupShake 0.3s ease-out;
+}
+@keyframes popupShake {
+  0% { transform: scale(1) translate(0,0); }
+  25% { transform: scale(1) translate(-2px, 2px); }
+  50% { transform: scale(1) translate(2px, -2px); }
+  75% { transform: scale(1) translate(-1px, -1px); }
+  100% { transform: scale(1) translate(0,0); }
 }
 </style>
 </head>
 <body>
 
-<!-- 顶部Banner -->
-<div class="banner">
-  <div class="banner-img"></div>
-  <div class="banner-title">マジンガレ ボエムドール</div>
-</div>
+<div class="liquid-bg"></div>
 
-<div class="container">
-  <!-- 左侧导航栏 -->
-  <div class="left-nav">
-    <div class="nav-box">
-      <div class="nav-title">navigation</div>
-      <button class="nav-btn" onclick="location.href='index.html'">home</button>
-      <button class="nav-btn" onclick="location.href='about.html'">about</button>
-      <button class="nav-btn" onclick="location.href='works.html'">works</button>
-    </div>
-    <div class="nav-box">
-      <div class="nav-title">profile</div>
-      <div style="font-size:14px; color:#8a62c2; line-height:1.6;">
-        name: tuituji<br>
-        age: 19<br>
-        like: ボカロ・<br>
-        よろしくおねがいします♡
-      </div>
-    </div>
-  </div>
+<!-- ===================== 满屏飘的小贴纸（已改PNG文件名） ===================== -->
+< img class="floating-sticker float-1" src="弹窗1.png">
+< img class="floating-sticker float-2" src="弹窗2.png">
+< img class="floating-sticker float-3" src="弹窗1.png">
+< img class="floating-sticker float-4" src="弹窗2.png">
+< img class="floating-sticker float-5" src="弹窗1.png">
+<!-- ========================================================== -->
 
-  <!-- 中间主内容区 -->
-  <div class="main-content">
-    <div class="about-card">
-      <div class="card-header">About Me</div>
-      <div class="avatar-box">
-        <div class="avatar-img"></div>
-        <div class="about-text">
-          はじめまして！魔法少女サイトへようこそ♡<br>
-          私は動物が大好きで、VOCALOIDも好きなイラストレーターです。
-        </div>
-      </div>
-      <div class="about-text">
-        このサイトは私の個人ホームページです。<br>
-        イラスト・3Dモデリング・Webデザインなど、いろいろやってます！
-      </div>
-    </div>
+<div class="crack-overlay" id="crackOverlay"></div>
 
-    <div class="favorites-card">
-      <div class="card-header">Favorites</div>
-      <div class="fav-list">
-        <div class="fav-item">🎤 ボカロ（初音ミク）</div>
-        <div class="fav-item">🎨 イラスト（二次元）</div>
-        <div class="fav-item">💻 Webデザイン（Y2K）</div>
-        <div class="fav-item">🌸 「ミク全肯定」</div>
-        <div class="fav-item">🎮 おんがくゲーム</div>
-        <div class="fav-item">📷 写真撮影</div>
-      </div>
-    </div>
-  </div>
+<video id="crack-video" muted playsinline>
+  <source src="React Bits - Index.webm" type="video/webm">
+</video>
 
-  <!-- 右侧侧边栏 -->
-  <div class="right-sidebar">
-    <div class="sidebar-card">
-      <div class="sidebar-title">Welcome♡</div>
-      < img class="popup-sticker" src="93f8d7c38a79b12bdef22c2f64bb6e8f.gif" alt="弹窗贴纸">
-      <div style="font-size:14px; color:#8a62c2; margin-top:10px;">
-        当サイトは個人のホームページです。<br>
-        無断転載禁止でお願いします♡
-      </div>
-    </div>
-
-    <div class="sidebar-card">
-      <div class="sidebar-title">Gallery</div>
-      <div class="gallery-grid">
-        <div class="gallery-img"></div>
-        <div class="gallery-img"></div>
-        <div class="gallery-img"></div>
-        <div class="gallery-img"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 底部栏 -->
-  <div class="footer">
-    <div class="footer-text">© 2026 魔法少女サイト All Rights Reserved</div>
-  </div>
+<div class="click-area" onclick="enterSite()">
+  <div class="avatar"></div>
+  <div class="hello-text">★ 魔法少女サイト ★</div>
+  <div class="tip">💊</div>
 </div>
 
 <!-- 弹窗容器 -->
 <div id="popup-container"></div>
 
 <script>
-// 弹窗互动代码（用你之前的弹窗GIF）
+const crackOverlay = document.getElementById('crackOverlay');
+const crackVideo = document.getElementById('crack-video');
 const popupContainer = document.getElementById('popup-container');
-const popupGif = '93f8d7c38a79b12bdef22c2f64bb6e8f.gif';
 
-function createPopup() {
+// 弹窗数据（可自定义）
+const popupTemplates = [
+  {title:"Error",icon:"❌",text:"Princess treatment or leave me alone."},
+  {title:"Windows 98 Update Wizard",icon:"❌",text:"Windows has detected that your computer is more than 12 months old. Windows 98 requires a newer machine to run properly."},
+  {title:"Dialog box",icon:"❓",text:"Sorry, Windows 95 was unable to comply with the \"go to hell\" command you specified."},
+  {title:"CD-ROM error",icon:"❌",text:"Error reading 'How to uninstall Windows 95.' Please insert other CD."},
+  {title:"Keyboard not plugged",icon:"⚠️",text:"Windows 95 was unable to detect your keyboard. Press F1 to retry or F2 to abort."},
+  {title:"Internal Error",icon:"⚠️",text:"Your windows has been running for 10h 37m 23s. Microsoft does not allow a windows system to run longer than that."},
+  {title:"Error",icon:"❌",text:"Some sort of error"},
+  {title:"Closing Windows 95",icon:"❓",text:"You are about to exit Windows 95. Do you want to play another game?"},
+  {title:"Printer Wizard",icon:"🖨️",text:"The new 32bit wizard has obtained a solution to your printing problem: do not print."},
+  {title:"Random Error",icon:"❌",text:"Windows 95 has detected a random error. This error occurs every once in a while. Please wait."},
+  {title:"Warning",icon:"⚠️",text:"Windows has categorized you as a government employee. Switching to sleep mode."},
+  {title:"Virus Alert",icon:"⚠️",text:"You've got the flu"},
+  {title:"Windows FAT",icon:"⚠️",text:"Windows 98 has detected too much FAT already in your system. Please stay with FAT16."}
+];
+
+// 生成弹窗
+function createPopup(template, index) {
   const popup = document.createElement('div');
   popup.className = 'error-popup';
-  popup.style.left = Math.random() * (window.innerWidth - 320) + 'px';
-  popup.style.top = Math.random() * (window.innerHeight - 200) + 'px';
+  const left = Math.random() * (window.innerWidth - 320);
+  const top = Math.random() * (window.innerHeight - 200);
+  popup.style.left = `${left}px`;
+  popup.style.top = `${top}px`;
+  popup.style.transitionDelay = `${index * 0.05}s`;
+
   popup.innerHTML = `
-    <div style="background:#003cbc; color:white; padding:3px 5px; display:flex; justify-content:space-between;">
-      <span>Error</span>
-      <span style="background:#c0c0c0; border:1px solid #000; width:14px; height:14px; text-align:center; font-size:10px;">×</span>
+    <div class="popup-header">
+      <span class="popup-title">${template.title}</span>
+      <span class="popup-close">×</span>
     </div>
-    <div style="padding:15px; display:flex; gap:10px;">
-      < img src="${popupGif}" style="width:80px; height:auto;">
-      <div>システムエラーが発生しました。</div>
+    <div class="popup-content">
+      <span class="popup-icon">${template.icon}</span>
+      <span class="popup-text">${template.text}</span>
     </div>
-    <button class="popup-btn" onclick="this.parentElement.parentElement.remove()">OK</button>
+    <button class="popup-btn">OK</button>
   `;
-  setTimeout(() => popup.classList.add('popup-show'), 50);
   return popup;
 }
 
-// 点击页面任意位置，弹出弹窗
-document.body.addEventListener('click', () => {
-  const popup = createPopup();
-  popupContainer.appendChild(popup);
-  // 5秒后自动关闭
+// 点击触发
+function enterSite() {
+  // 碎玻璃动画
+  crackOverlay.style.animation = 'none';
   setTimeout(() => {
-    if (popup.parentElement) popup.remove();
-  }, 5000);
-});
+    crackOverlay.style.animation = 'crackFade 1.2s ease-out forwards';
+  }, 10);
 
-// 页面加载后自动弹出3个弹窗
-window.addEventListener('load', () => {
-  for (let i = 0; i < 3; i++) {
+  // 破碎视频
+  crackVideo.style.opacity = 0.8;
+  crackVideo.currentTime = 0;
+  crackVideo.play();
+
+  // 批量弹出弹窗
+  popupContainer.innerHTML = '';
+  popupTemplates.forEach((template, index) => {
+    const popup = createPopup(template, index);
+    popupContainer.appendChild(popup);
     setTimeout(() => {
-      const popup = createPopup();
-      popupContainer.appendChild(popup);
-      setTimeout(() => popup.remove(), 5000);
-    }, i * 300);
-  }
-});
-</script>
+      popup.classList.add('popup-show');
+    }, index * 50);
+  });
 
+  // 1.5秒后跳转
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 1500);
+
+  // 视频结束后隐藏
+  crackVideo.onended = () => {
+    crackVideo.style.opacity = 0;
+  };
+}
+</script>
 </body>
 </html>
