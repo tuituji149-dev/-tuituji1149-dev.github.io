@@ -315,7 +315,7 @@ function enterSite() {
     }, index * 50);
   });
 
-  // 1.5秒后跳转
+  // 1.5秒后跳转（只保留点击触发，不自动跑）
   setTimeout(() => {
     window.location.href = "main.html";
   }, 1500);
@@ -326,10 +326,9 @@ function enterSite() {
   };
 }
 
-// 页面加载完成，自动执行，不用手动点！
-window.onload = function() {
-  enterSite();
-};
+// 👇 这里只保留点击绑定，删掉所有window.onload！
+// 找到你页面里绑定点击的代码，确保是这样：
+document.body.addEventListener('click', enterSite);
 </script>
 </body>
 </html>
