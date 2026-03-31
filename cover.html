@@ -11,47 +11,54 @@
   box-sizing: border-box;
   cursor: pointer;
 }
+
 html, body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
   background: #000;
-  position: relative;
 }
 
-/* 背景图：完全撑满 */
-.liquid-bg {
+/* 视频背景：适配webm格式，全屏无白边 */
+#video-bg {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background: url('bg.jpg') center center / cover no-repeat;
-  transform: scale(1.1);
+  object-fit: cover;
+  z-index: 1;
+  transform: scale(1.05); /* 轻微放大彻底消除边缘白边 */
 }
 
-/* 碎玻璃：强制全屏、放大到绝对不漏边 */
-.crack-overlay {
+/* 碎玻璃覆盖层：100%占满屏 */
+#crack {
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background: url('crack.png') center center / cover no-repeat;
+  background: url('crack.png') center/cover no-repeat;
   opacity: 0;
   pointer-events: none;
-  z-index: 20;
-  transform: scale(1.2);
+  z-index: 2;
+  transform: scale(1.05);
 }
 
+/* 点击后碎玻璃动画：突然出现+停留1秒+消失 */
 @keyframes crackAnim {
-  0%   { opacity: 0; transform: scale(1.3); }
-  15%  { opacity: 1; transform: scale(1.2); }
-  85%  { opacity: 1; transform: scale(1.2); }
-  100% { opacity: 0; transform: scale(1.2); }
+  0%  { opacity: 0; transform: scale(1.1); }
+  15% { opacity: 1; transform: scale(1.05); }
+  85% { opacity: 1; transform: scale(1.05); }
+  100%{ opacity: 0; transform: scale(1.05); }
 }
 
-.click-area {
+#crack.show {
+  animation: crackAnim 1.2s forwards;
+}
+
+/* 中间头像+文字 */
+.center {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -63,48 +70,74 @@ html, body {
 .avatar {
   width: 80px;
   height: 80px;
-  background: url('avatar.png') center/contain no-repeat;
-  margin: 0 auto 15px;
+  background: url('avatar.jpg') center/contain no-repeat;
+  margin-bottom: 15px;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
 }
 
 .hello-text {
   font-size: 32px;
   color: #fff;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.7);
   padding: 8px 20px;
   border-radius: 8px;
+  letter-spacing: 4px;
 }
 
 .tip {
   margin-top: 20px;
+  font-size: 16px;
   color: #fff;
+  text-shadow: 0 0 5px rgba(0,0,0,0.8);
+  opacity: 0.8;
+  animation: blink 1.5s infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.3; }
 }
 </style>
 </head>
-<body>
 
-<div class="liquid-bg"></div>
-<div class="crack-overlay" id="crackOverlay"></div>
+<body onclick="enterSite()">
 
-<div class="click-area" onclick="enterSite()">
+<!-- 直接用你的webm视频，注意文件名要完全一致 -->
+<video id="video-bg" muted loop autoplay playsinline>
+  <source src="React Bits - Index.webm" type="video/webm">
+</video>
+
+<div id="crack"></div>
+
+<div class="center">
   <div class="avatar"></div>
-  <div class="hello-text">→HELLO←</div>
+  <div class="hello-text">→ HELLO ←</div>
   <div class="tip">点击进入我的Y2K主页</div>
 </div>
 
 <script>
-const crack = document.getElementById('crackOverlay');
+const crack = document.getElementById('crack');
+const videoBg = document.getElementById('video-bg');
 
 function enterSite() {
-  crack.style.animation = 'none';
+  // 1. 触发碎玻璃动画
+  crack.classList.add('show');
+  
+  // 2. 视频同步强化破碎感（可选，让背景跟着震一下）
+  videoBg.style.transform = 'scale(1.05)';
   setTimeout(() => {
-    crack.style.animation = 'crackAnim 1.2s forwards';
-  }, 10);
+    videoBg.style.transform = 'scale(1.05)';
+  }, 1200);
 
+  // 3. 1.2秒后跳转主页
   setTimeout(() => {
-    location.href = "index.html";
+    window.location.href = "index.html";
   }, 1200);
 }
 </script>
+
 </body>
 </html>
