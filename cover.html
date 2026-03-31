@@ -239,8 +239,8 @@ html, body {
 
 <div class="click-area" onclick="enterSite()">
   <div class="avatar"></div>
-  <div class="hello-text">魔法少女サイト</div>
-  <div class="tip">以血为契，踏入暗黑魔法世界</div>
+  <div class="hello-text">★ 魔法少女サイト ★</div>
+  <div class="tip">开启★ </div>
 </div>
 
 <!-- 弹窗容器 -->
@@ -325,6 +325,17 @@ function enterSite() {
     crackVideo.style.opacity = 0;
   };
 }
+</script>
+<script>
+// 点页面任意地方，跳到主页面
+document.body.addEventListener('click', function(){
+  location.href = 'main.html'
+})
+
+// 不想点也可以，等3秒自动跳过去
+setTimeout(function(){
+  location.href = 'main.html'
+}, 3000)
 </script>
 </body>
 </html>
