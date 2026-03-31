@@ -11,7 +11,6 @@
   box-sizing: border-box;
   cursor: pointer;
 }
-/* 全屏基础背景 */
 body {
   width: 100vw;
   height: 100vh;
@@ -20,7 +19,7 @@ body {
   position: relative;
 }
 
-/* 你的原蕾丝背景图，完全保留 */
+/* 你的背景，完全不动 */
 .liquid-bg {
   position: absolute;
   top: 0;
@@ -29,52 +28,27 @@ body {
   height: 100%;
   background: url('bg.jpg') center/cover no-repeat;
   opacity: 0.95;
-  animation: bgFloat 15s ease-in-out infinite alternate;
 }
 
-@keyframes bgFloat {
-  0% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.03) rotate(0.5deg); }
-  100% { transform: scale(1) rotate(-0.5deg); }
-}
-
-/* 👇 核心：玻璃破碎纹理叠加层（SVG滤镜生成，无需额外图片） */
-.crack-overlay {
+/* 跟图一模一样的玻璃碎纹 */
+.crack {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: transparent;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><path d="M0,0L1000,1000M1000,0L0,1000M300,0L700,1000M700,0L300,1000M500,0L500,1000M0,300L1000,700M0,700L1000,300" stroke="rgba(220,200,255,0.8)" stroke-width="2.5" fill="none"/></svg>');
+  background-size: 100% 100%;
+  opacity: 0;
   pointer-events: none;
   z-index: 20;
-  opacity: 0;
-  /* 破碎动画：从中心扩散，渐显渐隐 */
-  animation: crackReveal 0.8s ease-out forwards;
-  /* 应用SVG破碎纹理滤镜，生成玻璃裂纹 */
-  filter: url(#crackFilter);
 }
 
-/* 破碎动画关键帧 */
-@keyframes crackReveal {
-  0% { 
-    opacity: 0; 
-    transform: scale(1.2) rotate(0deg);
-    clip-path: circle(0% at 50% 50%);
-  }
-  50% { 
-    opacity: 1; 
-    transform: scale(1) rotate(0deg);
-    clip-path: circle(100% at 50% 50%);
-  }
-  100% { 
-    opacity: 0; 
-    transform: scale(1) rotate(0deg);
-    clip-path: circle(100% at 50% 50%);
-  }
+/* 点击时闪一下 */
+.crack.show {
+  opacity: 1;
 }
 
-/* 中间点击区域，完全保留 */
 .click-area {
   position: absolute;
   top: 50%;
@@ -82,120 +56,51 @@ body {
   transform: translate(-50%, -50%);
   text-align: center;
   z-index: 10;
-  transition: all 0.3s;
-}
-.click-area:hover {
-  transform: translate(-50%, -50%) scale(1.05);
 }
 
-/* 你的原像素鼠标头像，完全保留 */
 .avatar {
   width: 80px;
   height: 80px;
   background: url('avatar.png') center/contain no-repeat;
   margin: 0 auto 15px;
-  animation: pulse 2s ease-in-out infinite;
-}
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
 }
 
-/* HELLO文字，完全保留 */
 .hello-text {
   font-size: 32px;
-  font-weight: bold;
   color: #fff;
-  text-shadow: 0 0 10px rgba(0,0,0,0.8);
   background: rgba(0,0,0,0.6);
   padding: 8px 20px;
   border-radius: 8px;
-  letter-spacing: 4px;
 }
 
-/* 点击提示，完全保留 */
 .tip {
   margin-top: 20px;
-  font-size: 16px;
   color: #fff;
-  text-shadow: 0 0 10px rgba(0,0,0,0.8);
-  opacity: 0.8;
-  animation: blink 1.5s infinite;
-}
-@keyframes blink {
-  0%, 100% { opacity: 0.8; }
-  50% { opacity: 0.3; }
-}
-
-/* 波纹动画，完全保留 */
-@keyframes ripple {
-  from { transform: scale(0); opacity: 1; }
-  to { transform: scale(2); opacity: 0; }
 }
 </style>
 </head>
 <body>
-<!-- 👇 SVG玻璃破碎滤镜（核心：纯代码生成裂纹纹理，无需额外图片） -->
-<svg width="0" height="0" style="position:absolute;">
-  <filter id="crackFilter">
-    <!-- 生成随机裂纹噪声 -->
-    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" seed="10" result="noise"/>
-    <!-- 调整对比度，强化裂纹线条 -->
-    <feColorMatrix in="noise" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 90 -45" result="noiseContrast"/>
-    <!-- 位移扭曲，生成真实玻璃破碎纹理 -->
-    <feDisplacementMap in="SourceGraphic" in2="noiseContrast" scale="80" xChannelSelector="R" yChannelSelector="G" result="cracked"/>
-    <!-- 叠加彩色反光，还原赛博玻璃质感 -->
-    <feColorMatrix in="cracked" type="matrix" values="1 0 0 0 0.2  0 1 0 0 0.1  0 0 1 0 0.3  0 0 0 1 0"/>
-    <!-- 轻微模糊，让裂纹更自然 -->
-    <feGaussianBlur stdDeviation="1"/>
-  </filter>
-</svg>
 
-<!-- 你的原背景 -->
 <div class="liquid-bg"></div>
+<div class="crack" id="crack"></div>
 
-<!-- 👇 破碎纹理叠加层（JS控制点击触发） -->
-<div class="crack-overlay" id="crackOverlay"></div>
-
-<!-- 你的原点击区域 -->
-<div class="click-area" onclick="enterSite(event)">
+<div class="click-area" onclick="enterSite()">
   <div class="avatar"></div>
   <div class="hello-text">→HELLO←</div>
-  <div class="tip">点击进入我的Y2K主页</div>
+  <div class="tip">点击进入主页</div>
 </div>
 
 <script>
-// 获取破碎叠加层
-const crackOverlay = document.getElementById('crackOverlay');
+const crack = document.getElementById('crack');
 
-// 点击函数：同时触发波纹+玻璃破碎特效+跳转
-function enterSite(e) {
-  // 1. 重置并触发玻璃破碎动画
-  crackOverlay.style.animation = 'none';
-  setTimeout(() => {
-    crackOverlay.style.animation = 'crackReveal 0.8s ease-out forwards';
-  }, 10);
+function enterSite() {
+  // 点击 → 碎玻璃立刻出现
+  crack.classList.add('show');
 
-  // 2. 触发粉紫色波纹（完全保留）
-  const ripple = document.createElement('div');
-  ripple.style.position = 'absolute';
-  ripple.style.width = '200px';
-  ripple.style.height = '200px';
-  ripple.style.borderRadius = '50%';
-  ripple.style.background = 'rgba(212, 179, 255, 0.6)';
-  ripple.style.top = e.clientY - 100 + 'px';
-  ripple.style.left = e.clientX - 100 + 'px';
-  ripple.style.animation = 'ripple 0.6s ease-out';
-  ripple.style.pointerEvents = 'none';
-  ripple.style.zIndex = '15';
-  document.body.appendChild(ripple);
-  
-  setTimeout(() => ripple.remove(), 600);
-  
-  // 3. 0.8秒后跳转到主页（等破碎动画完整播放）
+  // 200毫秒后跳转，刚好闪一下
   setTimeout(() => {
     window.location.href = "index.html";
-  }, 800);
+  }, 200);
 }
 </script>
 </body>
